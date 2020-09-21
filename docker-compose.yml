@@ -1,0 +1,11 @@
+version: '3'
+services:
+  db:
+    image: postgres:12
+    volumes:
+      - ./db/postgresql_setup.sql:/docker-entrypoint-initdb.d/postgresql_setup.sql
+      - ./database-data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
