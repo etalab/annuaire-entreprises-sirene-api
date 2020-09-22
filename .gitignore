@@ -1,3 +1,6 @@
 database-data/
 data/
 .ipynb_checkpoints/
+test/
+test2/
+test.json

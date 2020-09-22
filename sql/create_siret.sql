@@ -59,15 +59,6 @@ CREATE TABLE siret
     geo_l4 CHARACTER VARYING,
     geo_l5 CHARACTER VARYING,
     typecom CHARACTER VARYING,
-    reg CHARACTER VARYING,
-    dep CHARACTER VARYING,
-    arr CHARACTER VARYING,
-    tncc CHARACTER VARYING, 
-    ncc CHARACTER VARYING, 
-    nccenr CHARACTER VARYING, 
-    libelle CHARACTER VARYING, 
-    can CHARACTER VARYING,
-    comparent CHARACTER VARYING,
     CONSTRAINT fk_siren
         FOREIGN KEY(siren)
             REFERENCES siren(siren)
