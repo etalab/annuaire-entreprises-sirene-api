@@ -13,7 +13,7 @@ La base SIRENE open data se mettant à jour une fois par mois, il est proposé d
 Le workflow est donc le suivant : 
 - Exécution des services ```db``` et ```postgrest``` sur un réseau docker dédié (les services mettent environ ~35 minutes pour se lancer complètement)
 - Exposition du point d'API via un routing de ```traefik``` vers le service ```postgrest```
-- Au 1er du mois, exécution de nouveaux services ```db``` et ```postgrest```. Tant que les services ne sont pas opérationnels (cad tant que les données ne sont pas complètement chargées dans le service ```db```), Traefik ne reroute pas vers le nouveau service ```postgrest```
+- Au 1er du mois, exécution de nouveaux services ```db``` et ```postgrest``` via le script ```deploy.sh```. Tant que les services ne sont pas opérationnels (cad tant que les données ne sont pas complètement chargées dans le service ```db```), Traefik ne reroute pas vers le nouveau service ```postgrest```
 - Une fois les nouveaux services ```db``` et ```postgrest``` prêts, on déconnecte leurs précédentes versions 
 
 ### Services
@@ -26,18 +26,18 @@ Lors de la phase de build, le dernier batch de données SIRENE est téléchargé
 - 0_get_last_siren_data.sh : téléchargement des derniers fichiers Siren
 - 1_get_last_siret_data.sh : téléchargement des derniers fichiers Siret
 
-Au démarrage du service, un certain nombre de script contenu dans ```db/init/``` sont exécutés : 
-- 10-postgresql_setup.sql : Création de la base de données, de l'utilisateur principal et des deux tables ```siren``` et ```siret````
-- 20-populate-siren.sql : Chargement des données SIREN dans la table ```siren```
+Au démarrage du service, un certain nombre de scripts contenu dans ```db/init/``` sont exécutés : 
+- 10-postgresql_setup.sh : Création de la base de données, de l'utilisateur principal et des deux tables ```siren``` et ```siret```
+- 20-populate-siren.sh : Chargement des données SIREN dans la table ```siren```
 - 30-populate-siret.sh : Chargement des données SIRET dans la table ```siret```
-- 40-create-tsvector.sql : Création d'une colonne ```tsv``` dans la table ```siren``` pour faciliter la recherche des unités légales
+- 40-create-tsvector.sh : Création d'une colonne ```tsv``` dans la table ```siren``` pour faciliter la recherche des unités légales
 - 50-create-view.sh : Création d'une vue ```etablissements_view``` permettant de requêter tous les établissemnts et comprenant des éléments au niveau unité légale
 
 #### service postgrest
 
 Le service postgrest permet de s'interfacer avec la base postgresql et offre une interface d'API sur celle-ci.
 
-Les labels suivants permettent à Traefik de rerouter le traffic du port 3000 vers le container : 
+Les labels suivants permettent à Traefik de rerouter le traffic vers le port 3000 du container : 
 ```
     labels:
       - "traefik.enable=true"
@@ -55,7 +55,7 @@ HEALTHCHECK --interval=1s --timeout=3s \
 
 #### script deploy.sh
 
-Ce script permet de gérer les différents jeux de données d'un mois à l'autre. Un environnement courant est taggé avec la couleur ```blue``` (ou ```green```). Le script détecte la couleur actuelle et lance un docker-compose avec un tag de la couleur opposé. Une fois les services ```up``` et ```healthy```, le script coupe l'ancien service.
+Ce script permet de gérer les différents jeux de données d'un mois à l'autre. Un environnement courant est taggé avec la couleur ```blue``` (ou ```green```). Le script détecte le tag courant et lance un docker-compose avec un tag de la couleur opposé. Une fois les services ```up``` et ```healthy```, le script coupe l'ancien service.
 
 
 ## Installation
@@ -93,7 +93,7 @@ docker network create backend-sirene_backendsirene
 
 ```
 docker-compose -f docker-compose-blue.yml build --no-cache
-docker-compose -f docker-compose-blue.yml up --build -d
+docker-compose -f docker-compose-blue.yml --project-name=blue up --build -d
 ```
 
 5. Accès à l'API
