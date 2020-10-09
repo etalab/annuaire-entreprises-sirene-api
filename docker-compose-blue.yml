@@ -5,7 +5,6 @@ services:
       context: ./db
     volumes:
       - ./db/init/:/docker-entrypoint-initdb.d/
-      #- ./database-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=password
     networks:
@@ -15,9 +14,11 @@ services:
       context: ./api
       args: 
         - POSTGREST_VERSION=v7.0.1
-        - POSTGRES_DB_HOST=db-blue
     environment:
       - POSTGRES_DB_HOST=db-blue
+      - POSTGRES_DB=sirene
+      - POSTGRES_USER=sirene
+      - POSTGRES_PASSWORD=sirene
     networks:
       - traefik
     labels:
