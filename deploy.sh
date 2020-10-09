@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mkdir -p ./database-data
+#mkdir -p ./database-data
 
 if [ $(docker ps --filter "health=healthy" | grep blue | wc -l) = 1 ]
 then
