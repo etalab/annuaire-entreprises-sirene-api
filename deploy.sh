@@ -1,4 +1,7 @@
 #!/bin/sh
+
+mkdir -p ./database-data
+
 if [ $(docker ps -f name=blue -q) ]
 then
     ENV="green"
