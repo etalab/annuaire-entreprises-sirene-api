@@ -12,7 +12,7 @@ else
 fi
 
 echo "Starting "$ENV" container"
-docker-compose --project-name=$ENV up --build -d
+docker-compose -f docker-compose-$ENV.yml --project-name=$ENV up --build -d
 
 while [ $(docker ps --filter "health=healthy" | grep $ENV | wc -l) = 0 ]
 do
@@ -23,4 +23,4 @@ done
 echo "Container up and healthy"
 
 echo "Stopping "$OLD" container"
-docker-compose --project-name=$OLD stop
+docker-compose -f docker-compose-$OLD.yml --project-name=$OLD stop
