@@ -5,7 +5,7 @@ services:
       context: ./db
     volumes:
       - ./db/init/:/docker-entrypoint-initdb.d/
-      - ./database-data:/var/lib/postgresql/data
+      #- ./database-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=password
     networks:

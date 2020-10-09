@@ -2,7 +2,7 @@
 
 mkdir -p ./database-data
 
-if [ $(docker ps -f name=blue -q) ]
+if [ $(docker ps --filter "health=healthy" | grep blue | wc -l) = 1 ]
 then
     ENV="green"
     OLD="blue"
