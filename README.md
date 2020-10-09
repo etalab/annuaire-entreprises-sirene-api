@@ -66,7 +66,6 @@ Ce script permet de gérer les différents jeux de données d'un mois à l'autre
 
 ```
 docker-compose -f docker-compose-traefik.yml up --build -d
-docker network create backend-sirene_backendsirene
 ```
 
 3. Changement des valeurs des variables d'environnement dans les fichiers ```docker-compose-blue.yml``` et ```docker-compose-green.yml```. Mettre les valeurs de votre choix pour les services ```db``` et ```postgres```:
