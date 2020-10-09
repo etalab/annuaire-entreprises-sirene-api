@@ -35,6 +35,7 @@ Au démarrage du service, un certain nombre de script contenu dans ```db/init/``
 
 #### service postgrest
 
+Le service postgrest permet de s'interfacer avec la base postgresql et offre une interface d'API sur celle-ci.
 
 Les labels suivants permettent à Traefik de rerouter le traffic du port 3000 vers le container : 
 ```
@@ -45,6 +46,12 @@ Les labels suivants permettent à Traefik de rerouter le traffic du port 3000 ve
       - "traefik.port=3000"
 ```
 
+Un Healthcheck est ajouté afin d'indiquer à Traefik (via les docker Healthcheck) si le container est prêt ou non. Le healthcheck consiste à vérifier si la table etablissements_view est disponible ou non : 
+
+```
+HEALTHCHECK --interval=1s --timeout=3s \
+  CMD PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_DB_HOST -p 5432 -U $POSTGRES_USER -d $POSTGRES_DB -c "select * from etablissements_view limit 1;"
+```
 
 
 ## Installation
