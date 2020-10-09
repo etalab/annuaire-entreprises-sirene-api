@@ -27,4 +27,4 @@ services:
 networks:
     traefik:
         external:
-            name: backend-sirene_backendsirene
+            name: backend-siren_backendsirene
