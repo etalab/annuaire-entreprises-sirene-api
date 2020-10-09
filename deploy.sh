@@ -14,9 +14,13 @@ fi
 echo "Starting "$ENV" container"
 docker-compose --project-name=$ENV up -d
 
-echo "Waiting..."
-sleep 5s
+while [ $(docker ps --filter "health=healthy" | grep $ENV | wc -l) = 0 ]
+do
+    sleep 5s
+    echo "Waiting..."
+done
+
+echo "Container up and healthy"
 
 echo "Stopping "$OLD" container"
 docker-compose --project-name=$OLD stop
-
