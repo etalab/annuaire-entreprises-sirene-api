@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db-blue:
+    build:
+      context: ./db
+    volumes:
+      - ./db/init/:/docker-entrypoint-initdb.d/
+      - ./database-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+    networks:
+       - traefik
+  postgrest:
+    build: 
+      context: ./api
+      args: 
+        - POSTGREST_VERSION=v7.0.1
+    environment:
+      - POSTGRES_DB_HOST: db-blue
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.postgrest.rule=Host(`localhost`)"
+      - "traefik.http.routers.postgrest.entrypoints=postgrest"
+      - "traefik.port=3000"
+    depends_on:
+      - db-blue
+networks:
+    traefik:
+        external:
+            name: backend-sirene_backendsirene
