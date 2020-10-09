@@ -46,7 +46,7 @@ Les labels suivants permettent à Traefik de rerouter le traffic vers le port 30
       - "traefik.port=3000"
 ```
 
-Un Healthcheck est ajouté afin d'indiquer à Traefik (via les docker Healthcheck) si le container est prêt ou non. Le healthcheck consiste à vérifier si la table etablissements_view est disponible ou non : 
+Un Healthcheck est ajouté afin d'indiquer à Traefik (via les docker Healthcheck) si le container est prêt ou non. Le healthcheck consiste à vérifier si la view etablissements_view est disponible ou non (étape réalisée à la fin de la préparation du container ```db```): 
 
 ```
 HEALTHCHECK --interval=1s --timeout=3s \
@@ -55,7 +55,7 @@ HEALTHCHECK --interval=1s --timeout=3s \
 
 #### script deploy.sh
 
-Ce script permet de gérer les différents jeux de données d'un mois à l'autre. Un environnement courant est taggé avec la couleur ```blue``` (ou ```green```). Le script détecte le tag courant et lance un docker-compose avec un tag de la couleur opposé. Une fois les services ```up``` et ```healthy```, le script coupe l'ancien service.
+Ce script permet de gérer les différents jeux de données d'un mois à l'autre. Un environnement courant est taggé avec la couleur ```blue``` (ou ```green```). Le script détecte le tag courant et lance un docker-compose avec un tag de la couleur opposée Une fois les services ```up``` et ```healthy```, le script coupe l'ancien service.
 
 
 ## Installation
