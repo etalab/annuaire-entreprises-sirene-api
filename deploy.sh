@@ -12,7 +12,7 @@ else
 fi
 
 echo "Starting "$ENV" container"
-docker-compose --project-name=$ENV up -d
+docker-compose --project-name=$ENV up --build -d
 
 while [ $(docker ps --filter "health=healthy" | grep $ENV | wc -l) = 0 ]
 do
