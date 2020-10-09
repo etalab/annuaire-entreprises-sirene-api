@@ -19,7 +19,6 @@ while [ $(docker ps --filter "health=healthy" | grep $ENV | wc -l) = 0 ]
 do
     sleep 5s
     echo "Waiting..."
-    sudo du -sc database-data/
 done
 
 echo "Container up and healthy"
