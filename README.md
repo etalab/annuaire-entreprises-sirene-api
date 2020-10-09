@@ -66,6 +66,7 @@ Ce script permet de gérer les différents jeux de données d'un mois à l'autre
 
 ```
 docker-compose -f docker-compose-traefik.yml up --build -d
+docker network create backend-sirene_backendsirene
 ```
 3. Première mise en production du backend 
 
