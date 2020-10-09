@@ -1,0 +1,17 @@
+CREATE ROLE sirene WITH LOGIN CREATEDB PASSWORD 'sirene';
+CREATE DATABASE sirene WITH OWNER sirene;
+
+\c sirene;
+CREATE EXTENSION pg_trgm;
+
+\f "./sql/create_siren.sql"
+\f "./sql/create_siret.sql"
+
+COPY siren(siren,statutDiffusionUniteLegale,unitePurgeeUniteLegale,dateCreationUniteLegale,sigleUniteLegale,sexeUniteLegale,prenom1UniteLegale,prenom2UniteLegale,prenom3UniteLegale,prenom4UniteLegale,prenomUsuelUniteLegale,pseudonymeUniteLegale, identifiantAssociationUniteLegale,trancheEffectifsUniteLegale,anneeEffectifsUniteLegale,dateDernierTraitementUniteLegale,nombrePeriodesUniteLegale,categorieEntreprise,anneeCategorieEntreprise,dateDebut,etatAdministratifUniteLegale,nomUniteLegale,nomUsageUniteLegale,denominationUniteLegale,denominationUsuelle1UniteLegale,denominationUsuelle2UniteLegale,denominationUsuelle3UniteLegale,categorieJuridiqueUniteLegale,activitePrincipaleUniteLegale,nomenclatureActivitePrincipaleUniteLegale,nicSiegeUniteLegale,economieSocialeSolidaireUniteLegale,caractereEmployeurUniteLegale) FROM '/tmp/data/StockUniteLegale_utf8.csv' delimiter ',' csv header encoding 'UTF8';
+
+DROP INDEX siren_siren;
+CREATE INDEX siren_siren ON siren (siren);
+DROP INDEX siren_activitePrincipaleUniteLegale;
+CREATE INDEX siren_activitePrincipaleUniteLegale ON siren (activitePrincipaleUniteLegale);
+DROP INDEX siren_categorieJuridiqueUniteLegale;
+CREATE INDEX siren_categorieJuridiqueUniteLegale ON siren (categorieJuridiqueUniteLegale);

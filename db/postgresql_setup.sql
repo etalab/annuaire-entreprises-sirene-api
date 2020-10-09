@@ -1,5 +1,0 @@
-CREATE ROLE sirene WITH LOGIN CREATEDB PASSWORD 'sirene';
-CREATE DATABASE sirene WITH OWNER sirene;
-
-\c sirene;
-CREATE EXTENSION pg_trgm;

@@ -1,3 +1,57 @@
+CREATE ROLE sirene WITH LOGIN CREATEDB PASSWORD 'sirene';
+CREATE DATABASE sirene WITH OWNER sirene;
+
+ALTER ROLE sirene WITH SUPERUSER;
+
+\c sirene;
+CREATE EXTENSION pg_trgm;
+
+\c sirene sirene;
+
+DROP TABLE IF EXISTS siren;
+DROP TABLE IF EXISTS siret;
+
+CREATE TABLE siren
+(
+	id_siren SERIAL PRIMARY KEY NOT NULL,
+    siren CHARACTER VARYING,
+    statutDiffusionUniteLegale CHARACTER VARYING,
+    unitePurgeeUniteLegale CHARACTER VARYING,
+    dateCreationUniteLegale  date default NULL,
+    sigleUniteLegale CHARACTER VARYING,
+    sexeUniteLegale CHARACTER VARYING,
+    prenom1UniteLegale CHARACTER VARYING,
+    prenom2UniteLegale CHARACTER VARYING,
+    prenom3UniteLegale CHARACTER VARYING,
+    prenom4UniteLegale CHARACTER VARYING,
+    prenomUsuelUniteLegale CHARACTER VARYING,
+    pseudonymeUniteLegale CHARACTER VARYING,
+    identifiantAssociationUniteLegale CHARACTER VARYING,
+    trancheEffectifsUniteLegale CHARACTER VARYING,
+    anneeEffectifsUniteLegale CHARACTER VARYING,
+    dateDernierTraitementUniteLegale date default NULL,
+    nombrePeriodesUniteLegale CHARACTER VARYING,
+    categorieEntreprise CHARACTER VARYING,
+    anneeCategorieEntreprise CHARACTER VARYING,
+    dateDebut date default NULL,
+    etatAdministratifUniteLegale CHARACTER VARYING,
+    nomUniteLegale CHARACTER VARYING,
+    nomUsageUniteLegale CHARACTER VARYING,
+    denominationUniteLegale CHARACTER VARYING,
+    denominationUsuelle1UniteLegale CHARACTER VARYING,
+    denominationUsuelle2UniteLegale CHARACTER VARYING,
+    denominationUsuelle3UniteLegale CHARACTER VARYING,
+    categorieJuridiqueUniteLegale CHARACTER VARYING,
+    activitePrincipaleUniteLegale CHARACTER VARYING,
+    nomenclatureActivitePrincipaleUniteLegale CHARACTER VARYING,
+    nicSiegeUniteLegale CHARACTER VARYING,
+    economieSocialeSolidaireUniteLegale CHARACTER VARYING,
+    caractereEmployeurUniteLegale CHARACTER VARYING,
+    UNIQUE(siren)
+)
+TABLESPACE pg_default;
+
+
 CREATE TABLE siret
 (
 	id_siret SERIAL PRIMARY KEY NOT NULL,
@@ -64,3 +118,5 @@ CREATE TABLE siret
             REFERENCES siren(siren)
 )
 TABLESPACE pg_default;
+
+
