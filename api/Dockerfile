@@ -27,8 +27,6 @@ RUN apt-get update && apt-get install -y postgresql-client-12
 
 
 COPY postgrest.conf /etc/postgrest.conf
-COPY wait-for-postgres.sh /
-RUN chmod +x /wait-for-postgres.sh
 
 ENV PGRST_DB_URI= \
     PGRST_DB_SCHEMA=public \
