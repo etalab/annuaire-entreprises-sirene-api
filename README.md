@@ -68,14 +68,35 @@ Ce script permet de gérer les différents jeux de données d'un mois à l'autre
 docker-compose -f docker-compose-traefik.yml up --build -d
 docker network create backend-sirene_backendsirene
 ```
-3. Première mise en production du backend 
+
+3. Changement des valeurs des variables d'environnement dans les fichiers ```docker-compose-blue.yml``` et ```docker-compose-green.yml```. Mettre les valeurs de votre choix pour les services ```db``` et ```postgres```:
+
+```
+...
+  db-<COLOR>:
+    ...
+    environment:
+      - POSTGRES_DB=sirene
+      - POSTGRES_USER=sirene
+      - POSTGRES_PASSWORD=sirene
+  postgrest:
+    ...
+    environment:
+      - POSTGRES_DB_HOST=db-blue
+      - POSTGRES_DB=sirene
+      - POSTGRES_USER=sirene
+      - POSTGRES_PASSWORD=sirene
+      ...
+```
+
+4. Première mise en production du backend 
 
 ```
 docker-compose -f docker-compose-blue.yml build --no-cache
 docker-compose -f docker-compose-blue.yml up --build -d
 ```
 
-4. Accès à l'API
+5. Accès à l'API
 
 Vous pouvez accéder à l'API via http://IP:3000/ et requêter la base via la [documentation postgrest](http://postgrest.org/).
 Exemple :
@@ -83,7 +104,7 @@ Exemple :
 http://localhost:3000/etablissements_view?tsv=plfts.boucherie&limit=100 # Retourne les 100 premiers résultats de boucherie dans la base
 ```
 
-5. Lorsqu'une nouvelle version des données est disponible : 
+6. Lorsqu'une nouvelle version des données est disponible : 
 
 ```
 ./deploy.sh
