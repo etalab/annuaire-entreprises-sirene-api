@@ -19,9 +19,10 @@ while [ $(docker ps --filter "health=healthy" | grep $ENV | wc -l) = 0 ]
 do
     sleep 5s
     echo "Waiting..."
+    sudo du -sc database-data/
 done
 
 echo "Container up and healthy"
 
 echo "Stopping "$OLD" container"
-docker-compose -f docker-compose-$OLD.yml --project-name=$OLD stop
+docker-compose -f docker-compose-$OLD.yml --project-name=$OLD down
