@@ -15,6 +15,7 @@ services:
       context: ./api
       args: 
         - POSTGREST_VERSION=v7.0.1
+        - POSTGRES_DB_HOST=db-blue
     environment:
       - POSTGRES_DB_HOST: db-blue
     networks:
