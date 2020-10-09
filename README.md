@@ -53,6 +53,10 @@ HEALTHCHECK --interval=1s --timeout=3s \
   CMD PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_DB_HOST -p 5432 -U $POSTGRES_USER -d $POSTGRES_DB -c "select * from etablissements_view limit 1;"
 ```
 
+#### script deploy.sh
+
+Ce script permet de gérer les différents jeux de données d'un mois à l'autre. Un environnement courant est taggé avec la couleur ```blue``` (ou ```green```). Le script détecte la couleur actuelle et lance un docker-compose avec un tag de la couleur opposé. Une fois les services ```up``` et ```healthy```, le script coupe l'ancien service.
+
 
 ## Installation
 
@@ -63,7 +67,6 @@ HEALTHCHECK --interval=1s --timeout=3s \
 ```
 docker-compose -f docker-compose-traefik.yml up --build -d
 ```
-
 3. Première mise en production du backend 
 
 ```
@@ -71,7 +74,15 @@ docker-compose -f docker-compose-blue.yml build --no-cache
 docker-compose -f docker-compose-blue.yml up --build -d
 ```
 
-4. Lorsqu'une nouvelle version des données est disponible : 
+4. Accès à l'API
+
+Vous pouvez accéder à l'API via http://IP:3000/ et requêter la base via la [documentation postgrest](http://postgrest.org/).
+Exemple :
+```
+http://localhost:3000/etablissements_view?tsv=plfts.boucherie&limit=100 # Retourne les 100 premiers résultats de boucherie dans la base
+```
+
+5. Lorsqu'une nouvelle version des données est disponible : 
 
 ```
 ./deploy.sh
