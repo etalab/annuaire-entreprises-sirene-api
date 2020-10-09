@@ -6,7 +6,9 @@ services:
     volumes:
       - ./db/init/:/docker-entrypoint-initdb.d/
     environment:
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=sirene
+      - POSTGRES_USER=sirene
+      - POSTGRES_PASSWORD=sirene
     networks:
        - traefik
   postgrest:

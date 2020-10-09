@@ -1,17 +1,10 @@
-CREATE ROLE sirene WITH LOGIN CREATEDB PASSWORD 'sirene';
-CREATE DATABASE sirene WITH OWNER sirene;
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE EXTENSION pg_trgm;"
 
-ALTER ROLE sirene WITH SUPERUSER;
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP TABLE IF EXISTS siren;"
 
-\c sirene;
-CREATE EXTENSION pg_trgm;
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP TABLE IF EXISTS siret;"
 
-\c sirene sirene;
-
-DROP TABLE IF EXISTS siren;
-DROP TABLE IF EXISTS siret;
-
-CREATE TABLE siren
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE TABLE siren
 (
 	id_siren SERIAL PRIMARY KEY NOT NULL,
     siren CHARACTER VARYING,
@@ -49,10 +42,10 @@ CREATE TABLE siren
     caractereEmployeurUniteLegale CHARACTER VARYING,
     UNIQUE(siren)
 )
-TABLESPACE pg_default;
+TABLESPACE pg_default;"
 
 
-CREATE TABLE siret
+psql -U sirene -d sirene -c "CREATE TABLE siret
 (
 	id_siret SERIAL PRIMARY KEY NOT NULL,
     siren CHARACTER VARYING,
@@ -117,6 +110,6 @@ CREATE TABLE siret
         FOREIGN KEY(siren)
             REFERENCES siren(siren)
 )
-TABLESPACE pg_default;
+TABLESPACE pg_default;"
 
 
