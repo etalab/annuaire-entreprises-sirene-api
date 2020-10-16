@@ -12,7 +12,6 @@ else
 fi
 
 echo "Starting "$ENV" container"
-docker-compose -f docker-compose-$ENV.yml build --no-cache
 docker-compose -f docker-compose-$ENV.yml --project-name=$ENV up --build -d
 
 while [ $(docker ps --filter "health=healthy" | grep $ENV | wc -l) = 0 ]
