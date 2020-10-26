@@ -3,11 +3,16 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "COPY siren(siren,statutDiffusionUnite
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP INDEX IF EXISTS siren_siren;"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_siren ON siren (siren);"
+
+
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP INDEX IF EXISTS siren_denominationunitelegale;"
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_denominationunitelegale ON siren USING gin (denominationunitelegale gin_trgm_ops);"
+
+
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP INDEX IF EXISTS siren_activitePrincipaleUniteLegale;"
-
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_activitePrincipaleUniteLegale ON siren (activitePrincipaleUniteLegale);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP INDEX IF EXISTS siren_categorieJuridiqueUniteLegale;"
 
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP INDEX IF EXISTS siren_categorieJuridiqueUniteLegale;"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_categorieJuridiqueUniteLegale ON siren (categorieJuridiqueUniteLegale);"
 
 
