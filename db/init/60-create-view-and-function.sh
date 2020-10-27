@@ -112,9 +112,9 @@ CREATE OR REPLACE FUNCTION get_unite_legale (
 	language plpgsql
 as \$\$
 DECLARE 
-    totalcount INTEGER := (SELECT COUNT(*) FROM (SELECT * FROM unitelegale_view WHERE tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 1000) tbl);
+    totalcount INTEGER := (SELECT COUNT(*) FROM (SELECT * FROM unitelegale_view WHERE tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 2000) tbl);
 BEGIN
-    IF (totalcount < 1000) THEN
+    IF (totalcount < 2000) THEN
         return query 
             SELECT 
                     jsonb_agg(
