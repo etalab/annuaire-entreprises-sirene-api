@@ -96,7 +96,7 @@ CREATE VIEW etablissements_siren AS
     ON N.siren = T.siren;"
 
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
+psql -U $POSTGRES_USER -d $POSTGRES_DB  -c "
 CREATE OR REPLACE FUNCTION get_unite_legale (
   search text,
   page_ask text,
@@ -112,7 +112,7 @@ CREATE OR REPLACE FUNCTION get_unite_legale (
 	language plpgsql
 as \$\$
 DECLARE 
-    totalcount INTEGER := (SELECT COUNT(*) FROM (SELECT * FROM unitelegale_view WHERE tsv @@ to_tsquery(REPLACE (search, '%20', ' & ')) LIMIT 1000) tbl);
+    totalcount INTEGER := (SELECT COUNT(*) FROM (SELECT * FROM unitelegale_view WHERE tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 1000) tbl);
 BEGIN
     IF (totalcount < 1000) THEN
         return query 
@@ -158,7 +158,8 @@ BEGIN
                             'commune', t.commune,
                             'tsv', t.tsv,
                             'etablissements', t.etablissements,
-                            'nombre_etablissements', t.nombre_etablissements
+                            'nombre_etablissements', t.nombre_etablissements,
+                            'score', t.score
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -169,6 +170,7 @@ BEGIN
                 (
                     SELECT
                         COUNT(*) OVER () as rowcount,
+                        ts_rank(tsv,to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')),1) as score,
                         activite_principale, 
                         activite_principale_entreprise, 
                         activite_principale_registre_metier, 
@@ -212,8 +214,8 @@ BEGIN
                     FROM
                         unitelegale_view 
                     WHERE 
-                        tsv @@ to_tsquery(REPLACE (search, '%20', ' & '))
-                    ORDER BY nombre_etablissements DESC
+                        tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & '))
+                    ORDER BY score DESC, nombre_etablissements DESC
                     LIMIT CAST (per_page_ask AS INTEGER)
                     OFFSET ((CAST (page_ask AS INTEGER) - 1)*(CAST (per_page_ask AS INTEGER)))
                 ) t;        
@@ -315,7 +317,7 @@ BEGIN
                     FROM
                         unitelegale_view 
                     WHERE 
-                        tsv @@ to_tsquery(REPLACE (search, '%20', ' & '))
+                        tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & '))
                     LIMIT CAST (per_page_ask AS INTEGER)
                     OFFSET ((CAST (page_ask AS INTEGER) - 1)*(CAST (per_page_ask AS INTEGER)))
                 ) t;    
