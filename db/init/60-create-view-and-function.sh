@@ -43,7 +43,8 @@ CREATE VIEW unitelegale_view AS
         N.tsv,
         N.etablissements,
         N.nombre_etablissements,
-        T.etatadministratifetablissement as etat_administratif_etablissement
+        T.etatadministratifetablissement as etat_administratif_etablissement,
+        N.nom_complet
     FROM siret T 
     LEFT JOIN siren N 
     ON N.siren = T.siren
@@ -90,26 +91,22 @@ CREATE VIEW etablissements_siren AS
         T.typevoieetablissement as type_voie, 
         T.codecommuneetablissement as commune, 
         N.tsv,
-        T.etatadministratifetablissement as etat_administratif_etablissement
+        T.etatadministratifetablissement as etat_administratif_etablissement,
+        N.nombre_etablissements
     FROM siret T 
     LEFT JOIN siren N 
     ON N.siren = T.siren;"
 
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB  -c "
-CREATE OR REPLACE FUNCTION get_unite_legale (
-  search text,
-  page_ask text,
-  per_page_ask text
+psql -U $POSTGRES_USER -d $POSTGRES_DB  -c "CREATE OR REPLACE FUNCTION get_unite_legale (search text, page_ask text, per_page_ask text) 
+returns table (
+    unite_legale jsonb,
+    total_results bigint,
+    total_pages integer,
+    page integer,
+    per_page integer
 ) 
-	returns table (
-		unite_legale jsonb,
-        total_results bigint,
-        total_pages integer,
-        page integer,
-        per_page integer
-	) 
-	language plpgsql
+language plpgsql
 as \$\$
 DECLARE 
     totalcount INTEGER := (SELECT COUNT(*) FROM (SELECT * FROM unitelegale_view WHERE tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 2000) tbl);
@@ -160,7 +157,8 @@ BEGIN
                             'etablissements', t.etablissements,
                             'nombre_etablissements', t.nombre_etablissements,
                             'score', t.score,
-                            'etat_administratif_etablissement', t.etat_administratif_etablissement
+                            'etat_administratif_etablissement', t.etat_administratif_etablissement,
+                            'nom_complet', t.nom_complet
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -212,7 +210,8 @@ BEGIN
                         tsv,
                         etablissements,
                         nombre_etablissements,
-                        etat_administratif_etablissement
+                        etat_administratif_etablissement,
+                        nom_complet
                     FROM
                         unitelegale_view 
                     WHERE 
@@ -266,7 +265,8 @@ BEGIN
                             'tsv', t.tsv,
                             'etablissements', t.etablissements,
                             'nombre_etablissements', t.nombre_etablissements,
-                            'etat_administratif_etablissement', t.etat_administratif_etablissement
+                            'etat_administratif_etablissement', t.etat_administratif_etablissement,
+                            'nom_complet',t.nom_complet
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -317,7 +317,8 @@ BEGIN
                         tsv,
                         etablissements,
                         nombre_etablissements,
-                        etat_administratif_etablissement
+                        etat_administratif_etablissement,
+                        nom_complet
                     FROM
                         unitelegale_view 
                     WHERE 
@@ -326,8 +327,7 @@ BEGIN
                     OFFSET ((CAST (page_ask AS INTEGER) - 1)*(CAST (per_page_ask AS INTEGER)))
                 ) t;    
     END IF;
-end;\$\$;
-"
+end;\$\$;"
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (SELECT
     CASE WHEN nature_juridique_entreprise = '1000' THEN
@@ -346,3 +346,4 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (SELECT
 FROM
     unitelegale_view
 ) to '/srv/sirene/sitemap-name.csv' with csv"
+
