@@ -42,12 +42,12 @@ CREATE VIEW unitelegale_view AS
         T.codecommuneetablissement as commune, 
         N.tsv,
         N.etablissements,
-        N.nombre_etablissements
+        N.nombre_etablissements,
+        T.etatadministratifetablissement as etat_administratif_etablissement
     FROM siret T 
     LEFT JOIN siren N 
     ON N.siren = T.siren
-    WHERE T.etablissementsiege = 't'
-    AND T.etatadministratifetablissement = 'A';"
+    WHERE T.etablissementsiege = 't';"
 
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
@@ -159,7 +159,8 @@ BEGIN
                             'tsv', t.tsv,
                             'etablissements', t.etablissements,
                             'nombre_etablissements', t.nombre_etablissements,
-                            'score', t.score
+                            'score', t.score,
+                            'etat_administratif_etablissement', t.etat_administratif_etablissement
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -210,12 +211,13 @@ BEGIN
                         commune, 
                         tsv,
                         etablissements,
-                        nombre_etablissements
+                        nombre_etablissements,
+                        etat_administratif_etablissement
                     FROM
                         unitelegale_view 
                     WHERE 
                         tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & '))
-                    ORDER BY score DESC, nombre_etablissements DESC
+                    ORDER BY etat_administratif_etablissement, score DESC, nombre_etablissements DESC
                     LIMIT CAST (per_page_ask AS INTEGER)
                     OFFSET ((CAST (page_ask AS INTEGER) - 1)*(CAST (per_page_ask AS INTEGER)))
                 ) t;        
@@ -263,7 +265,8 @@ BEGIN
                             'commune', t.commune,
                             'tsv', t.tsv,
                             'etablissements', t.etablissements,
-                            'nombre_etablissements', t.nombre_etablissements
+                            'nombre_etablissements', t.nombre_etablissements,
+                            'etat_administratif_etablissement', t.etat_administratif_etablissement
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -313,7 +316,8 @@ BEGIN
                         commune, 
                         tsv,
                         etablissements,
-                        nombre_etablissements
+                        nombre_etablissements,
+                        etat_administratif_etablissement
                     FROM
                         unitelegale_view 
                     WHERE 
@@ -324,3 +328,21 @@ BEGIN
     END IF;
 end;\$\$;
 "
+
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (SELECT
+    CASE WHEN nature_juridique_entreprise = '1000' THEN
+        CASE WHEN sigle IS NOT NULL THEN
+            COALESCE('' || REPLACE(LOWER(prenom) || '-', ' ','-'), '') || COALESCE('' || REPLACE(LOWER(nom) || '-', ' ','-'), '') || COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE('(' || LOWER(sigle) || ')-', ' ','-'),'.','-'),'''','-'),'*','-'), '') || siren
+        ELSE
+            COALESCE('' || REPLACE(LOWER(prenom) || '-', ' ','-'), '') || COALESCE('' || REPLACE(LOWER(nom) || '-', ' ','-'), '') || siren
+        END
+    ELSE
+        CASE WHEN sigle IS NOT NULL THEN
+            COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE(LOWER(nom_raison_sociale) || '-', ' ','-'),'.','-'),'''','-'),'*','-'), '') || COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE('(' || LOWER(sigle) || ')-', ' ','-'),'.','-'),'''','-'),'*','-'), '') || siren
+        ELSE
+            COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE(LOWER(nom_raison_sociale) || '-', ' ','-'),'.','-'),'''','-'),'*','-'), '') || siren
+        END
+    END
+FROM
+    unitelegale_view
+) to '/srv/sirene/sitemap-name.csv' with csv"
