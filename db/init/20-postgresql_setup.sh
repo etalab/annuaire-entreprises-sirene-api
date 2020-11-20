@@ -49,7 +49,7 @@ psql -U sirene -d sirene -c "CREATE TABLE siret
 (
 	id_siret SERIAL PRIMARY KEY NOT NULL,
     siren CHARACTER VARYING,
-    nic DECIMAL(9,2),
+    nic CHARACTER VARYING,
     siret CHARACTER VARYING,
     statutDiffusionEtablissement CHARACTER VARYING,
     dateCreationEtablissement date default NULL,
