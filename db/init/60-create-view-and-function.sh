@@ -460,5 +460,5 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (SELECT
     END
 FROM
     unitelegale_view
-) to '/srv/sirene/sitemap-name.csv' with csv"
+) to '/tmp/sitemap-name.csv' with csv"
 
