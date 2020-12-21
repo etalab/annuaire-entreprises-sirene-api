@@ -1,0 +1,16 @@
+version: '3'
+services:
+  http-proxy:
+    build:
+      context: ./aio
+    networks:
+       - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.aio.rule=Host(`localhost`)"
+      - "traefik.http.routers.aio.entrypoints=aio"
+      - "traefik.port=4400"
+networks:
+    traefik:
+        external:
+            name: backend-siren_backendsiren
