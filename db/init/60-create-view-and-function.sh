@@ -87,7 +87,8 @@ CREATE VIEW unitelegale_view AS
         N.etablissements,
         N.nombre_etablissements,
         T.etatadministratifetablissement as etat_administratif_etablissement,
-        N.nom_complet
+        N.nom_complet,
+        N.nom_url
     FROM siret T 
     LEFT JOIN siren N 
     ON N.siren = T.siren
@@ -136,7 +137,8 @@ CREATE VIEW etablissements_siren AS
         N.tsv,
         T.etatadministratifetablissement as etat_administratif_etablissement,
         N.nombre_etablissements,
-        N.nom_complet
+        N.nom_complet,
+        N.nom_url
     FROM siret T 
     LEFT JOIN siren N 
     ON N.siren = T.siren;"
@@ -202,7 +204,8 @@ BEGIN
                             'nombre_etablissements', t.nombre_etablissements,
                             'score', t.score,
                             'etat_administratif_etablissement', t.etat_administratif_etablissement,
-                            'nom_complet', t.nom_complet
+                            'nom_complet', t.nom_complet,
+                            'nom_url', t.nom_url
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -255,7 +258,8 @@ BEGIN
                         etablissements,
                         nombre_etablissements,
                         etat_administratif_etablissement,
-                        nom_complet
+                        nom_complet,
+                        nom_url
                     FROM
                         unitelegale_view 
                     WHERE 
@@ -310,7 +314,8 @@ BEGIN
                             'etablissements', t.etablissements,
                             'nombre_etablissements', t.nombre_etablissements,
                             'etat_administratif_etablissement', t.etat_administratif_etablissement,
-                            'nom_complet',t.nom_complet
+                            'nom_complet',t.nom_complet,
+                            'nom_url', t.nom_url
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -362,7 +367,8 @@ BEGIN
                         etablissements,
                         nombre_etablissements,
                         etat_administratif_etablissement,
-                        nom_complet
+                        nom_complet,
+                        nom_url
                     FROM
                         unitelegale_view 
                     WHERE 
@@ -426,6 +432,7 @@ BEGIN
                         'nombre_etablissements', t.nombre_etablissements,
                         'etat_administratif_etablissement', t.etat_administratif_etablissement,
                         'nom_complet', t.nom_complet,
+                        'nom_url', t.nom_url,
                         'etablissements', t.etablissements_array,
                         'etablissement_siege', t.etablissement_siege
                     )
@@ -444,21 +451,5 @@ BEGIN
 end;\$\$;"
 
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (SELECT
-    CASE WHEN nature_juridique_entreprise = '1000' THEN
-        CASE WHEN sigle IS NOT NULL THEN
-            COALESCE('' || REPLACE(LOWER(prenom) || '-', ' ','-'), '') || COALESCE('' || REPLACE(LOWER(nom) || '-', ' ','-'), '') || COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE('(' || LOWER(sigle) || ')-', ' ','-'),'.','-'),'''','-'),'*','-'), '') || siren
-        ELSE
-            COALESCE('' || REPLACE(LOWER(prenom) || '-', ' ','-'), '') || COALESCE('' || REPLACE(LOWER(nom) || '-', ' ','-'), '') || siren
-        END
-    ELSE
-        CASE WHEN sigle IS NOT NULL THEN
-            COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE(LOWER(nom_raison_sociale) || '-', ' ','-'),'.','-'),'''','-'),'*','-'), '') || COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE('(' || LOWER(sigle) || ')-', ' ','-'),'.','-'),'''','-'),'*','-'), '') || siren
-        ELSE
-            COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE(LOWER(nom_raison_sociale) || '-', ' ','-'),'.','-'),'''','-'),'*','-'), '') || siren
-        END
-    END
-FROM
-    unitelegale_view
-) to '/tmp/sitemap-name.csv' with csv"
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (SELECT nom_url FROM siren) to '/tmp/sitemap-name.csv' with csv"
 
