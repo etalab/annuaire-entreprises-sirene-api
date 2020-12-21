@@ -5,18 +5,20 @@ services:
   traefik:
     image: "traefik:v2.3"
     networks:
-      - backendsirene
+      - backendsiren
     container_name: "traefik"
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.postgrest.address=:3000"
+      - "--entrypoints.aio.address=:4400"
     ports:
       - "3000:3000"
+      - "4400:4400"
       - "8090:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 networks:
-    backendsirene:
+    backendsiren:
         driver: bridge
