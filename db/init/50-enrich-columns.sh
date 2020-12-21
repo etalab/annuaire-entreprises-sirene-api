@@ -20,16 +20,21 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN nom_comp
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET nom_complet = (SELECT
     CASE WHEN S.categoriejuridiqueunitelegale = '1000' THEN
         CASE WHEN S.sigleunitelegale IS NOT NULL THEN
-            COALESCE('' || REPLACE(LOWER(S.prenom1unitelegale) || ' ', ' ',' '), '') || COALESCE('' || REPLACE(LOWER(S.nomunitelegale) || ' ', ' ',' '), '') || COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE('(' || LOWER(S.sigleunitelegale) || ')', ' ',' '),'.',' '),'''',' '),'*',' '), '')
+            COALESCE(LOWER(S.prenom1unitelegale),'') || COALESCE(' ' || LOWER(S.nomunitelegale),'') || COALESCE(' (' || LOWER(S.sigleunitelegale) || ')','')
         ELSE
-            COALESCE('' || REPLACE(LOWER(S.prenom1unitelegale) || ' ', ' ',' '), '') || COALESCE('' || REPLACE(LOWER(S.nomunitelegale) || '', ' ',' '), '')
+            COALESCE(LOWER(S.prenom1unitelegale),'') || COALESCE(' ' || LOWER(S.nomunitelegale),'')
         END
     ELSE
         CASE WHEN S.sigleunitelegale IS NOT NULL THEN
-            COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE(LOWER(S.denominationunitelegale) || ' ', ' ',' '),'.',' '),'''',' '),'*',' '), '') || COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE('(' || LOWER(S.sigleunitelegale) || ')', ' ',' '),'.',' '),'''',' '),'*',' '), '')
+            COALESCE(LOWER(S.denominationunitelegale),'') || COALESCE(LOWER(' (' || S.sigleunitelegale || ')'),'')
         ELSE
-            COALESCE('' || REPLACE(REPLACE(REPLACE(REPLACE(LOWER(S.denominationunitelegale) || '', ' ',' '),'.',' '),'''',' '),'*',' '), '')
+            COALESCE(LOWER(S.denominationunitelegale),'')
         END
     END
 );"
+
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN nom_url TEXT;"
+
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET nom_url = regexp_replace(nom_complet || '-' || siren, '[^a-zA-Z0-9]+', '-','g');"
+
 
