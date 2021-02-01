@@ -8,6 +8,9 @@ RUN  apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /tmp/data/
+RUN mkdir -p /docker-entrypoint-initdb.d/
+
+COPY init/* /docker-entrypoint-initdb.d/
 
 EXPOSE 5432
 
