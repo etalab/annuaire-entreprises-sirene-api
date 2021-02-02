@@ -459,5 +459,75 @@ BEGIN
 end;\$\$;"
 
 
+
+
+psql -U $POSTGRES_USER -d $POSTGRES_DB  -c "CREATE OR REPLACE FUNCTION get_etablissement (siret_search text) 
+returns table (
+    etablissement jsonb
+) 
+language plpgsql
+as \$\$ 
+BEGIN
+    return query 
+        SELECT 
+                jsonb_agg(
+                    json_build_object(
+
+                    'activite_principale', t.activite_principale, 
+                    'activite_principale_entreprise', t.activite_principale_entreprise, 
+                    'activite_principale_registre_metier', t.activite_principale_registre_metier, 
+                    'categorie_entreprise', t.categorie_entreprise, 
+                    'cedex', t.cedex, 
+                    'code_postal', t.code_postal, 
+                    'date_creation', t.date_creation, 
+                    'date_creation_entreprise', t.date_creation_entreprise, 
+                    'date_debut_activite', t.date_debut_activite, 
+                    'date_mise_a_jour', t.date_mise_a_jour, 
+                    'enseigne', t.enseigne, 
+                    'geo_adresse', t.geo_adresse, 
+                    'geo_id', t.geo_id, 
+                    'geo_l4', t.geo_l4, 
+                    'geo_l5', t.geo_l5, 
+                    'geo_ligne', t.geo_ligne, 
+                    'geo_score', t.geo_score, 
+                    'geo_type', t.geo_type, 
+                    'is_siege', t.is_siege, 
+                    'latitude', t.latitude, 
+                    'libelle_commune', t.libelle_commune, 
+                    'libelle_voie', t.libelle_voie, 
+                    'longitude', t.longitude, 
+                    'nature_juridique_entreprise', t.nature_juridique_entreprise, 
+                    'nic', t.nic, 
+                    'nic_siege', t.nic_siege, 
+                    'nom', t.nom, 
+                    'nom_raison_sociale', t.nom_raison_sociale, 
+                    'numero_voie', t.numero_voie, 
+                    'prenom', t.prenom, 
+                    'sigle', t.sigle, 
+                    'siren', t.siren, 
+                    'siret', t.siret, 
+                    'tranche_effectif_salarie', t.tranche_effectif_salarie, 
+                    'tranche_effectif_salarie_entreprise', t.tranche_effectif_salarie_entreprise, 
+                    'type_voie', t.type_voie, 
+                    'commune', t.commune, 
+                    'tsv', t.tsv, 
+                    'numero_tva_intra', t.numero_tva_intra,
+                    'unite_legale', t.unite_legale
+                    )
+                ) as etablissement
+        FROM 
+            (
+                SELECT
+                    ev.*,
+                    (SELECT * FROM get_etablissements(ev.siren) t1) as unite_legale
+                FROM 
+                    etablissements_view ev
+                WHERE 
+                    ev.siret = siret_search
+            ) t;        
+end;\$\$;"
+
+
+
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (SELECT nom_url FROM siren) to '/tmp/sitemap-name.csv' with csv"
 
