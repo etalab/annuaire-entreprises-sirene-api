@@ -40,6 +40,11 @@ CREATE VIEW etablissements_view AS
         T.typevoieetablissement as type_voie, 
         T.codecommuneetablissement as commune, 
         N.tsv,
+        N.etablissements,
+        N.nombre_etablissements,
+        T.etatadministratifetablissement as etat_administratif_etablissement,
+        N.nom_complet,
+        N.nom_url,
         N.numero_tva_intra 
     FROM siret T 
     LEFT JOIN siren N 
@@ -511,6 +516,11 @@ BEGIN
                     'type_voie', t.type_voie, 
                     'commune', t.commune, 
                     'tsv', t.tsv, 
+                    'etablissements', t.etablissements,
+                    'nombre_etablissements', t.nombre_etablissements,
+                    'etat_administratif_etablissement', t.etat_administratif_etablissement,
+                    'nom_complet', t.nom_complet,
+                    'nom_url', t.nom_url,
                     'numero_tva_intra', t.numero_tva_intra,
                     'unite_legale', t.unite_legale
                     )
