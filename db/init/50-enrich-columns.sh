@@ -4,7 +4,7 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET enseignes = (SELEC
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN tsv tsvector;"
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET tsv = setweight(to_tsvector(coalesce(S.sigleunitelegale,'')), 'A') || setweight(to_tsvector(coalesce(S.denominationunitelegale,'')), 'B') || setweight(to_tsvector(coalesce(S.enseignes,'')), 'C') || setweight(to_tsvector(coalesce(S.nomunitelegale,'')), 'D') || setweight(to_tsvector(coalesce(S.prenom1unitelegale,'')), 'E');"
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET tsv = setweight(to_tsvector(coalesce(S.sigleunitelegale,'')), 'A') || setweight(to_tsvector(coalesce(S.denominationunitelegale,'')), 'B') || setweight(to_tsvector(coalesce(S.enseignes,'')), 'C') || setweight(to_tsvector(coalesce(S.nomunitelegale,'')), 'D') || setweight(to_tsvector(coalesce(S.prenom1unitelegale,'')), 'D');"
 
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_tsv ON siren USING gin(tsv);"
