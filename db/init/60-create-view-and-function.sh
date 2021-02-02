@@ -39,7 +39,8 @@ CREATE VIEW etablissements_view AS
         N.trancheeffectifsunitelegale as tranche_effectif_salarie_entreprise, 
         T.typevoieetablissement as type_voie, 
         T.codecommuneetablissement as commune, 
-        N.tsv 
+        N.tsv,
+        N.numero_tva_intra 
     FROM siret T 
     LEFT JOIN siren N 
     ON N.siren = T.siren;"
@@ -88,7 +89,8 @@ CREATE VIEW unitelegale_view AS
         N.nombre_etablissements,
         T.etatadministratifetablissement as etat_administratif_etablissement,
         N.nom_complet,
-        N.nom_url
+        N.nom_url,
+        N.numero_tva_intra 
     FROM siret T 
     LEFT JOIN siren N 
     ON N.siren = T.siren
@@ -138,7 +140,8 @@ CREATE VIEW etablissements_siren AS
         T.etatadministratifetablissement as etat_administratif_etablissement,
         N.nombre_etablissements,
         N.nom_complet,
-        N.nom_url
+        N.nom_url,
+        N.numero_tva_intra 
     FROM siret T 
     LEFT JOIN siren N 
     ON N.siren = T.siren;"
@@ -205,7 +208,8 @@ BEGIN
                             'score', t.score,
                             'etat_administratif_etablissement', t.etat_administratif_etablissement,
                             'nom_complet', t.nom_complet,
-                            'nom_url', t.nom_url
+                            'nom_url', t.nom_url,
+                            'numero_tva_intra', t.numero_tva_intra
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -259,7 +263,8 @@ BEGIN
                         nombre_etablissements,
                         etat_administratif_etablissement,
                         nom_complet,
-                        nom_url
+                        nom_url,
+                        numero_tva_intra 
                     FROM
                         unitelegale_view 
                     WHERE 
@@ -315,7 +320,8 @@ BEGIN
                             'nombre_etablissements', t.nombre_etablissements,
                             'etat_administratif_etablissement', t.etat_administratif_etablissement,
                             'nom_complet',t.nom_complet,
-                            'nom_url', t.nom_url
+                            'nom_url', t.nom_url,
+                            'numero_tva_intra', t.numero_tva_intra
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -368,7 +374,8 @@ BEGIN
                         nombre_etablissements,
                         etat_administratif_etablissement,
                         nom_complet,
-                        nom_url
+                        nom_url,
+                        numero_tva_intra
                     FROM
                         unitelegale_view 
                     WHERE 
@@ -434,7 +441,8 @@ BEGIN
                         'nom_complet', t.nom_complet,
                         'nom_url', t.nom_url,
                         'etablissements', t.etablissements_array,
-                        'etablissement_siege', t.etablissement_siege
+                        'etablissement_siege', t.etablissement_siege,
+                        'numero_tva_intra', t.numero_tva_intra
                     )
                 ) as unite_legale
         FROM 
