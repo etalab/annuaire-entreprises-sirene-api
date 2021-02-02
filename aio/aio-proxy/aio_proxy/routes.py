@@ -42,3 +42,19 @@ async def search_endpoint(request):
         res = await resp.json()
 
     return web.json_response(res, status=res_status)
+
+
+
+@routes.get('/siret')
+async def search_endpoint(request):
+    output_url = request.app['config']['output_url_siret']
+
+    json_body = {
+        'siret_search': request.rel_url.query['q']
+    }
+
+    async with request.app['http_session'].post(output_url, json=json_body) as resp:
+        res_status = resp.status
+        res = await resp.json()
+
+    return web.json_response(res, status=res_status)
