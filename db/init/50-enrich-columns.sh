@@ -1,6 +1,11 @@
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN enseignes TEXT;"
+
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET enseignes = (SELECT STRING_AGG(enseignes,', ') AS enseignes FROM (select DISTINCT ST.enseigne1etablissement as enseignes from siret ST where ST.siren = S.siren AND ST.enseigne1etablissement IS NOT NULL) tbl);"
+
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN tsv tsvector;"
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren SET tsv = setweight(to_tsvector(coalesce(sigleunitelegale,'')), 'A') || setweight(to_tsvector(coalesce(denominationunitelegale,'')), 'B') || setweight(to_tsvector(coalesce(nomunitelegale,'')), 'C') || setweight(to_tsvector(coalesce(prenom1unitelegale,'')), 'D');"
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET tsv = setweight(to_tsvector(coalesce(S.sigleunitelegale,'')), 'A') || setweight(to_tsvector(coalesce(S.denominationunitelegale,'')), 'B') || setweight(to_tsvector(coalesce(S.enseignes,'')), 'C') || setweight(to_tsvector(coalesce(S.nomunitelegale,'')), 'D') || setweight(to_tsvector(coalesce(S.prenom1unitelegale,'')), 'E');"
+
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_tsv ON siren USING gin(tsv);"
 
@@ -38,3 +43,6 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN nom_url 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET nom_url = regexp_replace(nom_complet || '-' || siren, '[^a-zA-Z0-9]+', '-','g');"
 
 
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN numero_tva_intra TEXT;"
+
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET numero_tva_intra = (SELECT CASE WHEN tvanumber < 10 THEN concat('FR0',tvanumber,siren) ELSE CONCAT('FR',tvanumber,siren) END FROM (SELECT (12+(3*bigintsiren)%97)%97 as tvanumber, siren FROM (select CAST (siren as BIGINT) as bigintsiren,siren from siren WHERE siren = S.siren) tbl) tbl2);"
