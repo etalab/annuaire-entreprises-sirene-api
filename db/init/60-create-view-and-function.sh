@@ -539,5 +539,4 @@ end;\$\$;"
 
 
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (SELECT nom_url FROM siren) to '/tmp/sitemap-name.csv' with csv"
-
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "\copy (select nom_url from unitelegale_view WHERE (nature_juridique_entreprise != '1000' AND etat_administratif_etablissement = 'F') OR (etat_administratif_etablissement = 'A')) to '/tmp/sitemap-name.csv' with csv"
