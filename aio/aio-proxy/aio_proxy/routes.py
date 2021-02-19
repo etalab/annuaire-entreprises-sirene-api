@@ -1,7 +1,7 @@
 from aiohttp import web
 
 
-ESCAPED_CHARS = "!@#$\'\"()/&`\\§°*£%+=-_;.,?:"
+ESCAPED_CHARS = "!@#$\'\"()/&`\\§°*£%+=_;.,?:<>"
 
 routes = web.RouteTableDef()
 
@@ -17,7 +17,7 @@ async def search_endpoint(request):
     output_url = request.app['config']['output_url_search']
 
     json_body = {
-        'search': sanatize_param(request.rel_url.query['q']),
+        'search': sanatize_param(request.rel_url.query['q'].replace("-"," ")),
         'page_ask': request.rel_url.query['page'],
         'per_page_ask': request.rel_url.query['per_page']
     }
