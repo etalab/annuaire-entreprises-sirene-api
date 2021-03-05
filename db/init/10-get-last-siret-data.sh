@@ -1,4 +1,3 @@
-
 for d in `seq -w 1 19` 2A 2B `seq 21 74` `seq 76 95` 98 ""; do
   cd /var/lib/postgresql/files && wget https://files.data.gouv.fr/geo-sirene/last/dep/geo_siret_$d.csv.gz
   gunzip /var/lib/postgresql/files/geo_siret_$d.csv.gz

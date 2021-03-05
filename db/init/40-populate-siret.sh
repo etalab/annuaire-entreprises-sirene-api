@@ -15,10 +15,6 @@ for d in `seq -w 1 8`; do
     echo "POPULATE dep 97"$d" OK"
 done
 
-echo "Creating index on siret column"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siret_siret ON siret (siret);"
-echo "Creating index on siren column"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siret_siren ON siret (siren);"
-echo "Creating index on codeCommuneEtablissementString column"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siret_codeCommuneEtablissement ON siret (codeCommuneEtablissement);"
-echo "index created"
+

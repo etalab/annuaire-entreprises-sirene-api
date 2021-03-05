@@ -1,8 +1,9 @@
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE EXTENSION pg_trgm;"
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP TABLE IF EXISTS siren;"
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP TABLE IF EXISTS siret;"
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET max_wal_size = '30GB';"
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET work_mem = '16GB';"
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT * FROM pg_reload_conf();"
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE TABLE siren
 (
