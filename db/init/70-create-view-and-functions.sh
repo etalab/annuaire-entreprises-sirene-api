@@ -286,9 +286,9 @@ BEGIN
                             tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & '))
                         ORDER BY 
                             etat_administratif_etablissement, 
+                            (CASE WHEN tsv_nomentreprise @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) THEN FALSE ELSE TRUE END),
                             score DESC, 
                             nombre_etablissements DESC,
-                            (CASE WHEN tsv_nomentreprise @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) THEN FALSE ELSE TRUE END),
                             (CASE WHEN tsv_nomprenom @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) THEN FALSE ELSE TRUE END),
                             (CASE WHEN tsv_enseigne @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) THEN FALSE ELSE TRUE END),
                             (CASE WHEN tsv_adresse @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) THEN FALSE ELSE TRUE END)
@@ -576,7 +576,6 @@ BEGIN
                         'tranche_effectif_salarie_entreprise', t.tranche_effectif_salarie_entreprise,
                         'type_voie', t.type_voie,
                         'commune', t.commune,
-                        'tsv', t.tsv,
                         'nombre_etablissements', t.nombre_etablissements,
                         'etat_administratif_etablissement', t.etat_administratif_etablissement,
                         'nom_complet', t.nom_complet,
@@ -651,13 +650,7 @@ BEGIN
                     'tranche_effectif_salarie_entreprise', t.tranche_effectif_salarie_entreprise, 
                     'type_voie', t.type_voie, 
                     'commune', t.commune, 
-                    'tsv', t.tsv, 
-                    'etablissements', t.etablissements,
-                    'nombre_etablissements', t.nombre_etablissements,
                     'etat_administratif_etablissement', t.etat_administratif_etablissement,
-                    'nom_complet', t.nom_complet,
-                    'nom_url', t.nom_url,
-                    'numero_tva_intra', t.numero_tva_intra,
                     'unite_legale', t.unite_legale
                     )
                 ) as etablissement
