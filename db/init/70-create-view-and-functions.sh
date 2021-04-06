@@ -653,7 +653,7 @@ BEGIN
                 (
                     SELECT
                         ul.*,
-                        (SELECT json_agg(t1) FROM (SELECT * from etablissements_siren WHERE siren = siren_search LIMIT maxent OFFSET (page_ask - 1)) t1) as etablissements_array,
+                        (SELECT json_agg(t1) FROM (SELECT * from etablissements_siren WHERE siren = siren_search LIMIT maxent OFFSET (CAST(page_ask AS INTEGER)-1)*maxent) t1) as etablissements_array,
                         (SELECT json_agg(t2) FROM (SELECT * from etablissements_siren WHERE siren = siren_search AND is_siege = 't') t2) as etablissement_siege
                     FROM 
                         unitelegale_view ul
