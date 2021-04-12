@@ -5,7 +5,6 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN tsv_nomp
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN tsv_enseigne tsvector;"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER TABLE siren ADD COLUMN tsv_adresse tsvector;"
 
-
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S SET enseignes = (SELECT STRING_AGG(enseignes,', ') AS enseignes FROM (select DISTINCT ST.enseigne1etablissement as enseignes from siret ST where ST.siren = S.siren AND ST.enseigne1etablissement IS NOT NULL) tbl);"
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "UPDATE siren S
@@ -47,18 +46,6 @@ setweight(to_tsvector(coalesce(intermediary_view.commune,'')), 'D') ||
 setweight(to_tsvector(coalesce(intermediary_view.code_postal,'')), 'D') ||
 setweight(to_tsvector(coalesce(intermediary_view.libelle_commune,'')), 'D') 
 FROM intermediary_view WHERE S.siren = intermediary_view.siren;"
-
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_tsv ON siren USING gin(tsv);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_tsv_nomentreprise ON siren USING gin(tsv_nomentreprise);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_tsv_nomprenom ON siren USING gin(tsv_nomprenom);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_tsv_enseigne ON siren USING gin(tsv_enseigne);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_tsv_adresse ON siren USING gin(tsv_adresse);"
-
-
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_denominationunitelegale ON siren USING gin (denominationunitelegale gin_trgm_ops);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_activitePrincipaleUniteLegale ON siren (activitePrincipaleUniteLegale);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_categorieJuridiqueUniteLegale ON siren (categorieJuridiqueUniteLegale);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siret_codeCommuneEtablissement ON siret (codeCommuneEtablissement);"
 
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP VIEW IF EXISTS intermediary_view"

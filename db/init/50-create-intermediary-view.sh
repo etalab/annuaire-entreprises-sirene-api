@@ -18,4 +18,3 @@ CREATE VIEW intermediary_view AS
     LEFT JOIN siren N 
     ON N.siren = T.siren
     WHERE T.etablissementsiege = 't';"
-

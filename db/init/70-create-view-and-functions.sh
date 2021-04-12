@@ -4,15 +4,15 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
 CREATE VIEW etablissements_view AS 
     SELECT 
         T.activiteprincipaleetablissement as activite_principale, 
-        N.activiteprincipaleunitelegale as activite_principale_entreprise, 
+        N.activite_principale_entreprise, 
         T.activiteprincipaleregistremetiersetablissement as activite_principale_registre_metier, 
-        N. categorieentreprise as categorie_entreprise, 
+        N.categorie_entreprise, 
         T.codecedexetablissement as cedex, 
         T.codepostaletablissement as code_postal, 
         T.datecreationetablissement as date_creation, 
-        N.datecreationunitelegale as date_creation_entreprise, 
+        N.date_creation_entreprise, 
         T.datedebut as date_debut_activite, 
-        N.datederniertraitementunitelegale as date_mise_a_jour, 
+        N.date_mise_a_jour, 
         T.enseigne1etablissement as enseigne, 
         T.geo_adresse, 
         T.geo_id, 
@@ -26,99 +26,39 @@ CREATE VIEW etablissements_view AS
         T.libellecommuneetablissement as libelle_commune, 
         T.libellevoieetablissement as libelle_voie, 
         T.longitude, 
-        N.categoriejuridiqueunitelegale as nature_juridique_entreprise, 
+        N.nature_juridique_entreprise, 
         T.nic, 
-        N.nicsiegeunitelegale as nic_siege, 
-        N.nomunitelegale as nom, 
-        N.denominationunitelegale as nom_raison_sociale, 
+        N.nic_siege, 
+        N.nom, 
+        N.nom_raison_sociale, 
         T.numerovoieetablissement as numero_voie, 
-        N.prenom1unitelegale as prenom, 
-        N.sigleunitelegale as sigle, 
+        N.prenom, 
+        N.sigle, 
         N.siren, 
         T.siret, 
         T.trancheeffectifsetablissement as tranche_effectif_salarie, 
-        N.trancheeffectifsunitelegale as tranche_effectif_salarie_entreprise, 
+        N.tranche_effectif_salarie_entreprise, 
         T.typevoieetablissement as type_voie, 
         T.codecommuneetablissement as commune, 
         T.etatadministratifetablissement as etat_administratif_etablissement
     FROM siret T 
-    LEFT JOIN siren N 
+    LEFT JOIN siren_full N 
     ON N.siren = T.siren;"
-
-
-
-
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
-CREATE VIEW unitelegale_view AS 
-    SELECT 
-        T.activiteprincipaleetablissement as activite_principale, 
-        N.activiteprincipaleunitelegale as activite_principale_entreprise, 
-        T.activiteprincipaleregistremetiersetablissement as activite_principale_registre_metier, 
-        N. categorieentreprise as categorie_entreprise, 
-        T.codecedexetablissement as cedex, 
-        T.codepostaletablissement as code_postal, 
-        T.datecreationetablissement as date_creation, N.datecreationunitelegale as date_creation_entreprise, 
-        T.datedebut as date_debut_activite, 
-        N.datederniertraitementunitelegale as date_mise_a_jour, 
-        T.enseigne1etablissement as enseigne, 
-        T.geo_adresse, 
-        T.geo_id, 
-        T.geo_l4, 
-        T.geo_l5, 
-        T.geo_ligne, 
-        T.geo_score, 
-        T.geo_type, 
-        T.etablissementsiege as is_siege, 
-        T.latitude, 
-        T.libellecommuneetablissement as libelle_commune, 
-        T.libellevoieetablissement as libelle_voie, 
-        T.longitude, 
-        N.categoriejuridiqueunitelegale as nature_juridique_entreprise, 
-        T.nic, 
-        N.nicsiegeunitelegale as nic_siege, 
-        N.nomunitelegale as nom, 
-        N.denominationunitelegale as nom_raison_sociale, 
-        T.numerovoieetablissement as numero_voie, 
-        N.prenom1unitelegale as prenom, 
-        N.sigleunitelegale as sigle, 
-        N.siren, 
-        T.siret, 
-        T.trancheeffectifsetablissement as tranche_effectif_salarie, 
-        N.trancheeffectifsunitelegale as tranche_effectif_salarie_entreprise, 
-        T.typevoieetablissement as type_voie, 
-        T.codecommuneetablissement as commune,
-        T.etatadministratifetablissement as etat_administratif_etablissement,
-        N.enseignes,
-        N.tsv,
-        N.nombre_etablissements,
-        N.etablissements,
-        N.nom_complet,
-        N.nom_url,
-        numero_tva_intra,
-        N.tsv_nomentreprise,
-        N.tsv_enseigne,
-        N.tsv_nomprenom,
-        N.tsv_adresse
-    FROM siret T 
-    LEFT JOIN siren N 
-    ON N.siren = T.siren
-    WHERE T.etablissementsiege = 't';"
-
-
-
+    
 
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
 CREATE VIEW etablissements_siren AS 
     SELECT 
         T.activiteprincipaleetablissement as activite_principale, 
-        N.activiteprincipaleunitelegale as activite_principale_entreprise, 
+        N.activite_principale_entreprise, 
         T.activiteprincipaleregistremetiersetablissement as activite_principale_registre_metier, 
-        N. categorieentreprise as categorie_entreprise, 
+        N.categorie_entreprise, 
         T.codecedexetablissement as cedex, 
         T.codepostaletablissement as code_postal, 
-        T.datecreationetablissement as date_creation, N.datecreationunitelegale as date_creation_entreprise, 
+        T.datecreationetablissement as date_creation, 
+        N.date_creation_entreprise, 
         T.datedebut as date_debut_activite, 
-        N.datederniertraitementunitelegale as date_mise_a_jour, 
+        N.date_mise_a_jour, 
         T.enseigne1etablissement as enseigne, 
         T.geo_adresse, 
         T.geo_id, 
@@ -132,18 +72,18 @@ CREATE VIEW etablissements_siren AS
         T.libellecommuneetablissement as libelle_commune, 
         T.libellevoieetablissement as libelle_voie, 
         T.longitude, 
-        N.categoriejuridiqueunitelegale as nature_juridique_entreprise, 
+        N.nature_juridique_entreprise, 
         T.nic, 
-        N.nicsiegeunitelegale as nic_siege, 
-        N.nomunitelegale as nom, 
-        N.denominationunitelegale as nom_raison_sociale, 
+        N.nic_siege, 
+        N.nom, 
+        N.nom_raison_sociale, 
         T.numerovoieetablissement as numero_voie, 
-        N.prenom1unitelegale as prenom, 
-        N.sigleunitelegale as sigle, 
+        N.prenom, 
+        N.sigle, 
         N.siren, 
         T.siret, 
         T.trancheeffectifsetablissement as tranche_effectif_salarie, 
-        N.trancheeffectifsunitelegale as tranche_effectif_salarie_entreprise, 
+        N.tranche_effectif_salarie_entreprise, 
         T.typevoieetablissement as type_voie, 
         T.codecommuneetablissement as commune, 
         T.etatadministratifetablissement as etat_administratif_etablissement,
@@ -152,7 +92,7 @@ CREATE VIEW etablissements_siren AS
         N.nom_url,
         N.numero_tva_intra 
     FROM siret T 
-    LEFT JOIN siren N 
+    LEFT JOIN siren_full N 
     ON N.siren = T.siren;"
 
 
@@ -168,11 +108,11 @@ returns table (
 language plpgsql
 as \$\$
 DECLARE 
-    totalcountnomul INTEGER := (SELECT COUNT(*) FROM (SELECT * FROM unitelegale_view WHERE tsv_nomentreprise @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 2000) tbl);
+    totalcountnomul INTEGER := (SELECT COUNT(*) FROM (SELECT * FROM siren_full WHERE tsv_nomentreprise @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 2000) tbl);
     totalcount INTEGER;
 BEGIN
     IF (totalcountnomul < 2000) THEN
-        totalcount := (SELECT COUNT(*) FROM (SELECT * FROM unitelegale_view WHERE tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 2000) tbl);
+        totalcount := (SELECT COUNT(*) FROM (SELECT * FROM siren_full WHERE tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 2000) tbl);
         IF (totalcount < 2000) THEN
             return query 
                 SELECT 
@@ -279,7 +219,7 @@ BEGIN
                             nom_url,
                             numero_tva_intra 
                         FROM
-                            unitelegale_view 
+                            siren_full 
                         WHERE 
                             tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & '))
                         ORDER BY 
@@ -397,7 +337,7 @@ BEGIN
                             nom_url,
                             numero_tva_intra
                         FROM
-                            unitelegale_view 
+                            siren_full 
                         WHERE 
                             tsv_nomentreprise @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & '))
                         ORDER BY
@@ -512,7 +452,7 @@ BEGIN
                         nom_url,
                         numero_tva_intra
                     FROM
-                        unitelegale_view 
+                        siren_full 
                     WHERE 
                         tsv_nomentreprise @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & '))
                     LIMIT CAST (per_page_ask AS INTEGER)
@@ -533,7 +473,7 @@ returns table (
 language plpgsql
 as \$\$ 
 DECLARE 
-    nbent INTEGER := (SELECT nombre_etablissements FROM unitelegale_view WHERE siren = siren_search);
+    nbent INTEGER := (SELECT nombre_etablissements FROM siren_full WHERE siren = siren_search);
     maxent INTEGER := 200;
 BEGIN
     IF (nbent < maxent) THEN
@@ -594,7 +534,7 @@ BEGIN
                         (SELECT json_agg(t1) FROM (SELECT * from etablissements_siren WHERE siren = siren_search ORDER BY is_siege DESC,etat_administratif_etablissement) t1) as etablissements_array,
                         (SELECT json_agg(t2) FROM (SELECT * from etablissements_siren WHERE siren = siren_search AND is_siege = 't') t2) as etablissement_siege
                     FROM 
-                        unitelegale_view ul
+                        siren_full ul
                     WHERE 
                         ul.siren = siren_search
                 ) t;    
@@ -656,7 +596,7 @@ BEGIN
                         (SELECT json_agg(t1) FROM (SELECT * from etablissements_siren WHERE siren = siren_search LIMIT maxent OFFSET (CAST(page_ask AS INTEGER)-1)*maxent) t1) as etablissements_array,
                         (SELECT json_agg(t2) FROM (SELECT * from etablissements_siren WHERE siren = siren_search AND is_siege = 't') t2) as etablissement_siege
                     FROM 
-                        unitelegale_view ul
+                        siren_full ul
                     WHERE 
                         ul.siren = siren_search
                 ) t;   

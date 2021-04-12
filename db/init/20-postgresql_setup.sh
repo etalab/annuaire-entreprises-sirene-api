@@ -106,10 +106,7 @@ psql -U sirene -d sirene -c "CREATE TABLE siret
     geo_ligne CHARACTER VARYING, 
     geo_l4 CHARACTER VARYING,
     geo_l5 CHARACTER VARYING,
-    typecom CHARACTER VARYING,
-    CONSTRAINT fk_siren
-        FOREIGN KEY(siren)
-            REFERENCES siren(siren)
+    typecom CHARACTER VARYING
 )
 TABLESPACE pg_default;"
 

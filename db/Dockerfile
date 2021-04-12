@@ -10,3 +10,6 @@ RUN  apt-get update \
 RUN mkdir -p /tmp/data/
 
 EXPOSE 5432
+
+HEALTHCHECK --interval=1s --timeout=3s \
+  CMD psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT * FROM get_etablissement('');"
