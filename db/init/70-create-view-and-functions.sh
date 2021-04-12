@@ -722,7 +722,7 @@ BEGIN
             (
                 SELECT
                     ev.*,
-                    (SELECT * FROM get_etablissements(ev.siren) t1) as unite_legale
+                    (SELECT * FROM get_etablissements(ev.siren, '1') t1) as unite_legale
                 FROM 
                     etablissements_view ev
                 WHERE 
