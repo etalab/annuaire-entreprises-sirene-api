@@ -1,0 +1,17 @@
+version: '3'
+services:
+  db-green:
+    build:
+      context: ./db
+    volumes:
+      - ./db/init/:/docker-entrypoint-initdb.d/
+    environment:
+      - POSTGRES_DB=sirene
+      - POSTGRES_USER=sirene
+      - POSTGRES_PASSWORD=sirene
+    networks:
+       - traefik
+networks:
+    traefik:
+        external:
+            name: backend-siren_backendsiren
