@@ -25,6 +25,7 @@ CREATE VIEW etablissements_view AS
         T.latitude, 
         T.libellecommuneetablissement as libelle_commune, 
         T.libellevoieetablissement as libelle_voie, 
+        T.indicerepetitionetablissement as indice_repetition,
         T.longitude, 
         N.nature_juridique_entreprise, 
         T.nic, 
@@ -71,6 +72,7 @@ CREATE VIEW etablissements_siren AS
         T.latitude, 
         T.libellecommuneetablissement as libelle_commune, 
         T.libellevoieetablissement as libelle_voie, 
+        T.indicerepetitionetablissement as indice_repetition,
         T.longitude, 
         N.nature_juridique_entreprise, 
         T.nic, 
@@ -110,6 +112,7 @@ as \$\$
 DECLARE 
     totalcountnomul INTEGER := (SELECT COUNT(*) FROM (SELECT * FROM siren_full WHERE tsv_nomentreprise @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 2000) tbl);
     totalcount INTEGER;
+    offsetNb INTEGER := (SELECT ((CAST (page_ask AS INTEGER) - 1)*(CAST (per_page_ask AS INTEGER))));
 BEGIN
     IF (totalcountnomul < 2000) THEN
         totalcount := (SELECT COUNT(*) FROM (SELECT * FROM siren_full WHERE tsv @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) LIMIT 2000) tbl);
@@ -166,9 +169,9 @@ BEGIN
                             )
                         ) as unite_legale,
                         min(t.rowcount) as total_results,
-                        CAST (ROUND((min(t.rowcount)/(CAST (per_page_ask AS INTEGER)))) AS INTEGER) as total_pages,
-                        CAST (page_ask AS INTEGER) as per_page,
-                        CAST (per_page_ask AS INTEGER) as page
+                        CAST (ROUND(((min(t.rowcount)+(CAST (per_page_ask AS INTEGER))-1)/(CAST (per_page_ask AS INTEGER)))) AS INTEGER) as total_pages, 
+                        CAST (page_ask AS INTEGER) as page,
+                        CAST (per_page_ask AS INTEGER) as per_page
                 FROM 
                     (
                         SELECT
@@ -230,8 +233,8 @@ BEGIN
                             (CASE WHEN tsv_nomprenom @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) THEN FALSE ELSE TRUE END),
                             (CASE WHEN tsv_enseigne @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) THEN FALSE ELSE TRUE END),
                             (CASE WHEN tsv_adresse @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & ')) THEN FALSE ELSE TRUE END)
+                        OFFSET offsetNb
                         LIMIT CAST (per_page_ask AS INTEGER)
-                        OFFSET ((CAST (page_ask AS INTEGER) - 1)*(CAST (per_page_ask AS INTEGER)))
                     ) t;        
         ELSE
             return query
@@ -285,9 +288,9 @@ BEGIN
                             )
                         ) as unite_legale,
                         min(t.rowcount) as total_results,
-                        CAST (ROUND((min(t.rowcount)/(CAST (per_page_ask AS INTEGER)))) AS INTEGER) as total_pages,
-                        CAST (page_ask AS INTEGER) as per_page,
-                        CAST (per_page_ask AS INTEGER) as page
+                        CAST (ROUND(((min(t.rowcount)+(CAST (per_page_ask AS INTEGER))-1)/(CAST (per_page_ask AS INTEGER)))) AS INTEGER) as total_pages, 
+                        CAST (page_ask AS INTEGER) as page,
+                        CAST (per_page_ask AS INTEGER) as per_page
                 FROM 
                     (
                         SELECT
@@ -343,8 +346,8 @@ BEGIN
                         ORDER BY
                             etat_administratif_etablissement,
                             nombre_etablissements DESC
+                        OFFSET offsetNb
                         LIMIT CAST (per_page_ask AS INTEGER)
-                        OFFSET ((CAST (page_ask AS INTEGER) - 1)*(CAST (per_page_ask AS INTEGER)))
                     ) t;   
         END IF; 
                 
@@ -400,9 +403,9 @@ BEGIN
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
-                    CAST (ROUND((min(t.rowcount)/(CAST (per_page_ask AS INTEGER)))) AS INTEGER) as total_pages,
-                    CAST (page_ask AS INTEGER) as per_page,
-                    CAST (per_page_ask AS INTEGER) as page
+                    CAST (ROUND(((min(t.rowcount)+(CAST (per_page_ask AS INTEGER))-1)/(CAST (per_page_ask AS INTEGER)))) AS INTEGER) as total_pages, 
+                    CAST (page_ask AS INTEGER) as page,
+                    CAST (per_page_ask AS INTEGER) as per_page
             FROM 
                 (
                     SELECT
@@ -455,8 +458,8 @@ BEGIN
                         siren_full 
                     WHERE 
                         tsv_nomentreprise @@ to_tsquery(REPLACE(REPLACE (search, '%20', ' & '),'%27',' & '))
+                    OFFSET offsetNb
                     LIMIT CAST (per_page_ask AS INTEGER)
-                    OFFSET ((CAST (page_ask AS INTEGER) - 1)*(CAST (per_page_ask AS INTEGER)))
                 ) t;   
     END IF;
 end;\$\$;"
@@ -639,6 +642,7 @@ BEGIN
                     'latitude', t.latitude, 
                     'libelle_commune', t.libelle_commune, 
                     'libelle_voie', t.libelle_voie, 
+                    'indice_repetition', t.indice_repetition,
                     'longitude', t.longitude, 
                     'nature_juridique_entreprise', t.nature_juridique_entreprise, 
                     'nic', t.nic, 

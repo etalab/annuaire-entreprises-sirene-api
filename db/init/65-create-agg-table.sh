@@ -46,7 +46,7 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
             N.etablissements,
             N.nom_complet,
             N.nom_url,
-            numero_tva_intra,
+            N.numero_tva_intra,
             N.tsv_nomentreprise,
             N.tsv_enseigne,
             N.tsv_nomprenom,
