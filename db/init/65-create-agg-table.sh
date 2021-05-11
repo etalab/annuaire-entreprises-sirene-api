@@ -5,6 +5,7 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
         SELECT 
             T.activiteprincipaleetablissement as activite_principale, 
             N.activiteprincipaleunitelegale as activite_principale_entreprise, 
+            N.statutdiffusionunitelegale as statut_unite_legale,
             T.activiteprincipaleregistremetiersetablissement as activite_principale_registre_metier, 
             N. categorieentreprise as categorie_entreprise, 
             T.codecedexetablissement as cedex, 
@@ -23,7 +24,8 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
             T.etablissementsiege as is_siege, 
             T.latitude, 
             T.libellecommuneetablissement as libelle_commune, 
-            T.libellevoieetablissement as libelle_voie, 
+            T.libellevoieetablissement as libelle_voie,
+            T.indicerepetitionetablissement as indice_repetition,
             T.longitude, 
             N.categoriejuridiqueunitelegale as nature_juridique_entreprise, 
             T.nic, 
@@ -50,7 +52,9 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
             N.tsv_nomentreprise,
             N.tsv_enseigne,
             N.tsv_nomprenom,
-            N.tsv_adresse
+            N.tsv_adresse,
+            N.economieSocialeSolidaireUniteLegale,
+            N.identifiantAssociationUniteLegale
         FROM siret T 
         LEFT JOIN siren N 
         ON N.siren = T.siren

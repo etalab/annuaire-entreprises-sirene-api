@@ -19,7 +19,7 @@ docker-compose -f docker-compose-postgres-$ENV.yml --project-name=$ENV up --buil
 
 while [ $(docker ps --filter "health=healthy" | grep $ENV | wc -l) = 0 ]
 do
-    sleep 5s
+    sleep 30s
     echo "Waiting..."
 done
 
@@ -28,7 +28,7 @@ docker-compose -f docker-compose-postgrest-$ENV.yml --project-name=$ENV up --bui
 
 while [ $(docker ps --filter "health=healthy" | grep $ENV | wc -l) = 0 ]
 do
-    sleep 5s
+    sleep 30s
     echo "Waiting..."
 done
 

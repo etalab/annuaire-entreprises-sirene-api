@@ -41,7 +41,9 @@ CREATE VIEW etablissements_view AS
         N.tranche_effectif_salarie_entreprise, 
         T.typevoieetablissement as type_voie, 
         T.codecommuneetablissement as commune, 
-        T.etatadministratifetablissement as etat_administratif_etablissement
+        T.etatadministratifetablissement as etat_administratif_etablissement,
+        N.economieSocialeSolidaireUniteLegale,
+        N.identifiantAssociationUniteLegale
     FROM siret T 
     LEFT JOIN siren_full N 
     ON N.siren = T.siren;"
@@ -92,7 +94,9 @@ CREATE VIEW etablissements_siren AS
         N.nombre_etablissements,
         N.nom_complet,
         N.nom_url,
-        N.numero_tva_intra 
+        N.numero_tva_intra,
+        N.economieSocialeSolidaireUniteLegale,
+        N.identifiantAssociationUniteLegale
     FROM siret T 
     LEFT JOIN siren_full N 
     ON N.siren = T.siren;"
@@ -124,6 +128,7 @@ BEGIN
                                 'activite_principale', t.activite_principale,
                                 'activite_principale_entreprise', t.activite_principale_entreprise,
                                 'activite_principale_registre_metier', t.activite_principale_registre_metier,
+                                'statut_unite_legale', t.statut_unite_legale,
                                 'categorie_entreprise', t.categorie_entreprise,
                                 'cedex', t.cedex,
                                 'code_postal', t.code_postal,
@@ -143,6 +148,7 @@ BEGIN
                                 'latitude', t.latitude,
                                 'libelle_commune', t.libelle_commune,
                                 'libelle_voie', t.libelle_voie,
+                                'indice_repetition', t.indice_repetition,
                                 'longitude', t.longitude,
                                 'nature_juridique_entreprise', t.nature_juridique_entreprise,
                                 'nic', t.nic,
@@ -165,7 +171,9 @@ BEGIN
                                 'etat_administratif_etablissement', t.etat_administratif_etablissement,
                                 'nom_complet', t.nom_complet,
                                 'nom_url', t.nom_url,
-                                'numero_tva_intra', t.numero_tva_intra
+                                'numero_tva_intra', t.numero_tva_intra,
+                                'economieSocialeSolidaireUniteLegale', t.economieSocialeSolidaireUniteLegale,
+                                'identifiantAssociationUniteLegale', t.identifiantAssociationUniteLegale
                             )
                         ) as unite_legale,
                         min(t.rowcount) as total_results,
@@ -180,6 +188,7 @@ BEGIN
                             activite_principale, 
                             activite_principale_entreprise, 
                             activite_principale_registre_metier, 
+                            statut_unite_legale,
                             categorie_entreprise, 
                             cedex, 
                             code_postal, 
@@ -199,6 +208,7 @@ BEGIN
                             latitude, 
                             libelle_commune, 
                             libelle_voie, 
+                            indice_repetition,
                             longitude, 
                             nature_juridique_entreprise, 
                             nic, 
@@ -220,7 +230,9 @@ BEGIN
                             etat_administratif_etablissement,
                             nom_complet,
                             nom_url,
-                            numero_tva_intra 
+                            numero_tva_intra,
+                            economieSocialeSolidaireUniteLegale,
+                            identifiantAssociationUniteLegale
                         FROM
                             siren_full 
                         WHERE 
@@ -244,6 +256,7 @@ BEGIN
                                 'activite_principale', t.activite_principale,
                                 'activite_principale_entreprise', t.activite_principale_entreprise,
                                 'activite_principale_registre_metier', t.activite_principale_registre_metier,
+                                'statut_unite_legale', t.statut_unite_legale,
                                 'categorie_entreprise', t.categorie_entreprise,
                                 'cedex', t.cedex,
                                 'code_postal', t.code_postal,
@@ -263,6 +276,7 @@ BEGIN
                                 'latitude', t.latitude,
                                 'libelle_commune', t.libelle_commune,
                                 'libelle_voie', t.libelle_voie,
+                                'indice_repetition', t.indice_repetition,
                                 'longitude', t.longitude,
                                 'nature_juridique_entreprise', t.nature_juridique_entreprise,
                                 'nic', t.nic,
@@ -284,7 +298,9 @@ BEGIN
                                 'etat_administratif_etablissement', t.etat_administratif_etablissement,
                                 'nom_complet',t.nom_complet,
                                 'nom_url', t.nom_url,
-                                'numero_tva_intra', t.numero_tva_intra
+                                'numero_tva_intra', t.numero_tva_intra,
+                                'economieSocialeSolidaireUniteLegale', t.economieSocialeSolidaireUniteLegale,
+                                'identifiantAssociationUniteLegale', t.identifiantAssociationUniteLegale
                             )
                         ) as unite_legale,
                         min(t.rowcount) as total_results,
@@ -298,6 +314,7 @@ BEGIN
                             activite_principale, 
                             activite_principale_entreprise, 
                             activite_principale_registre_metier, 
+                            statut_unite_legale,
                             categorie_entreprise, 
                             cedex, 
                             code_postal, 
@@ -317,6 +334,7 @@ BEGIN
                             latitude, 
                             libelle_commune, 
                             libelle_voie, 
+                            indice_repetition,
                             longitude, 
                             nature_juridique_entreprise, 
                             nic, 
@@ -338,7 +356,9 @@ BEGIN
                             etat_administratif_etablissement,
                             nom_complet,
                             nom_url,
-                            numero_tva_intra
+                            numero_tva_intra,
+                            economieSocialeSolidaireUniteLegale,
+                            identifiantAssociationUniteLegale
                         FROM
                             siren_full 
                         WHERE 
@@ -359,6 +379,7 @@ BEGIN
                             'activite_principale', t.activite_principale,
                             'activite_principale_entreprise', t.activite_principale_entreprise,
                             'activite_principale_registre_metier', t.activite_principale_registre_metier,
+                            'statut_unite_legale', t.statut_unite_legale,
                             'categorie_entreprise', t.categorie_entreprise,
                             'cedex', t.cedex,
                             'code_postal', t.code_postal,
@@ -378,6 +399,7 @@ BEGIN
                             'latitude', t.latitude,
                             'libelle_commune', t.libelle_commune,
                             'libelle_voie', t.libelle_voie,
+                            'indice_repetition', t.indice_repetition,
                             'longitude', t.longitude,
                             'nature_juridique_entreprise', t.nature_juridique_entreprise,
                             'nic', t.nic,
@@ -399,7 +421,9 @@ BEGIN
                             'etat_administratif_etablissement', t.etat_administratif_etablissement,
                             'nom_complet',t.nom_complet,
                             'nom_url', t.nom_url,
-                            'numero_tva_intra', t.numero_tva_intra
+                            'numero_tva_intra', t.numero_tva_intra,
+                            'economieSocialeSolidaireUniteLegale', t.economieSocialeSolidaireUniteLegale,
+                            'identifiantAssociationUniteLegale', t.identifiantAssociationUniteLegale
                         )
                     ) as unite_legale,
                     min(t.rowcount) as total_results,
@@ -413,6 +437,7 @@ BEGIN
                         activite_principale, 
                         activite_principale_entreprise, 
                         activite_principale_registre_metier, 
+                        statut_unite_legale,
                         categorie_entreprise, 
                         cedex, 
                         code_postal, 
@@ -432,6 +457,7 @@ BEGIN
                         latitude, 
                         libelle_commune, 
                         libelle_voie, 
+                        indice_repetition,
                         longitude, 
                         nature_juridique_entreprise, 
                         nic, 
@@ -453,7 +479,9 @@ BEGIN
                         etat_administratif_etablissement,
                         nom_complet,
                         nom_url,
-                        numero_tva_intra
+                        numero_tva_intra,
+                        economieSocialeSolidaireUniteLegale,
+                        identifiantAssociationUniteLegale
                     FROM
                         siren_full 
                     WHERE 
@@ -527,7 +555,9 @@ BEGIN
                             'nom_url', t.nom_url,
                             'etablissements', t.etablissements_array,
                             'etablissement_siege', t.etablissement_siege,
-                            'numero_tva_intra', t.numero_tva_intra
+                            'numero_tva_intra', t.numero_tva_intra,
+                            'economieSocialeSolidaireUniteLegale', t.economieSocialeSolidaireUniteLegale,
+                            'identifiantAssociationUniteLegale', t.identifiantAssociationUniteLegale
                         )
                     ) as unite_legale
             FROM 
@@ -589,7 +619,9 @@ BEGIN
                             'nom_url', t.nom_url,
                             'etablissements', t.etablissements_array,
                             'etablissement_siege', t.etablissement_siege,
-                            'numero_tva_intra', t.numero_tva_intra
+                            'numero_tva_intra', t.numero_tva_intra,
+                            'economieSocialeSolidaireUniteLegale', t.economieSocialeSolidaireUniteLegale,
+                            'identifiantAssociationUniteLegale', t.identifiantAssociationUniteLegale
                         )
                     ) as unite_legale
             FROM 
@@ -659,7 +691,9 @@ BEGIN
                     'type_voie', t.type_voie, 
                     'commune', t.commune, 
                     'etat_administratif_etablissement', t.etat_administratif_etablissement,
-                    'unite_legale', t.unite_legale
+                    'unite_legale', t.unite_legale,
+                    'economieSocialeSolidaireUniteLegale', t.economieSocialeSolidaireUniteLegale,
+                    'identifiantAssociationUniteLegale', t.identifiantAssociationUniteLegale
                     )
                 ) as etablissement
         FROM 
