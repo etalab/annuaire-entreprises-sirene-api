@@ -14,14 +14,14 @@ RUN BUILD_DEPS="curl ca-certificates xz-utils" && \
     cd / && \
     apt-get -qq purge --auto-remove -y $BUILD_DEPS && \
     apt-get -qq clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN apt-get update && apt-get install -y curl
 
 RUN apt-get update && apt-get install -y gnupg2
 
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main 12' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
-RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 
 RUN apt-get update && apt-get install -y postgresql-client-12
 
