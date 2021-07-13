@@ -12,12 +12,13 @@ services:
     networks:
        - traefik
   postgrest:
-    build: 
+    build:
       context: ./api
-      args: 
+      args:
         - POSTGREST_VERSION=v7.0.1
     environment:
       - POSTGRES_DB_HOST=db-blue
+      - POSTGRES_DB_PORT=5432
       - POSTGRES_DB=sirene
       - POSTGRES_USER=sirene
       - POSTGRES_PASSWORD=sirene
@@ -33,4 +34,4 @@ services:
 networks:
     traefik:
         external:
-            name: backend-siren_backendsiren
+            name: api-annuaire-entreprises_backendsiren

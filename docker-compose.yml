@@ -11,9 +11,9 @@ services:
     networks:
        - traefik
   postgrest:
-    build: 
+    build:
       context: ./api
-      args: 
+      args:
         - POSTGREST_VERSION=v7.0.1
     networks:
       - traefik
@@ -27,4 +27,4 @@ services:
 networks:
     traefik:
         external:
-            name: backend-siren_backendsirene
+            name: api-annuaire-entreprises_backendsiren
