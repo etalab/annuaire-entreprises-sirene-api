@@ -1,8 +1,10 @@
-version: '3'
+version: '3.6'
 services:
   db-green:
     build:
       context: ./db
+      shm_size: '60gb'
+    shm_size: '60gb'
     volumes:
       - ./db/init/:/docker-entrypoint-initdb.d/
     environment:
