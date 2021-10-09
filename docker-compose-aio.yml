@@ -13,4 +13,4 @@ services:
 networks:
     traefik:
         external:
-            name: backend-siren_backendsiren
+            name: api-annuaire-entreprises_api

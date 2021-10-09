@@ -2,10 +2,10 @@ version: "3.3"
 
 services:
 
-  traefik:
+  traefik-light:
     image: "traefik:v2.3"
     networks:
-      - backendsiren
+      - api
     container_name: "traefik"
     command:
       - "--api.insecure=true"
@@ -20,5 +20,5 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 networks:
-    backendsiren:
+    api:
         driver: bridge

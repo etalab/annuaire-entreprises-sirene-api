@@ -3,6 +3,7 @@ services:
   db-blue:
     build:
       context: ./db
+      shm_size: '50gb'
     volumes:
       - ./db/init/:/docker-entrypoint-initdb.d/
     environment:
@@ -33,4 +34,4 @@ services:
 networks:
     traefik:
         external:
-            name: backend-siren_backendsiren
+            name: api-annuaire-entreprises_api

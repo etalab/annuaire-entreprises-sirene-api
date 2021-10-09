@@ -41,16 +41,8 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
             T.codecommuneetablissement as commune,
             T.etatadministratifetablissement as etat_administratif_etablissement,
             N.enseignes,
-            N.tsv,
             N.nombre_etablissements,
-            N.etablissements,
-            N.nom_complet,
-            N.nom_url,
-            N.numero_tva_intra,
-            N.tsv_nomentreprise,
-            N.tsv_enseigne,
-            N.tsv_nomprenom,
-            N.tsv_adresse
+            N.numero_tva_intra
         FROM siret T 
         LEFT JOIN siren N 
         ON N.siren = T.siren
@@ -63,11 +55,6 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_siren ON sire
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_siret ON siren_full (siret);"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_commune ON siren_full (commune);"
 
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_tsv ON siren_full USING gin(tsv);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_tsv_nomentreprise ON siren_full USING gin(tsv_nomentreprise);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_tsv_nomprenom ON siren_full USING gin(tsv_nomprenom);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_tsv_enseigne ON siren_full USING gin(tsv_enseigne);"
-psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_tsv_adresse ON siren_full USING gin(tsv_adresse);"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_nom_raison_sociale ON siren_full USING gin (nom_raison_sociale gin_trgm_ops);"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_activite_principale ON siren_full (activite_principale);"
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE INDEX siren_full_nature_juridique_entreprise ON siren_full (nature_juridique_entreprise);"

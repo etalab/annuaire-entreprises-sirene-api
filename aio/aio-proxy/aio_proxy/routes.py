@@ -18,26 +18,7 @@ def remove_typvoies(param):
     qw = param.split()
     res = [word for word in qw if word.lower() not in TYPEVOIES]
     return ' & '.join(res)
-
-@routes.get('/search')
-async def search_endpoint(request):
-    output_url = request.app['config']['output_url_search']
-
-    searchRes = sanatize_param(request.rel_url.query['q'].replace("-"," "))
-    searchRes = remove_typvoies(searchRes)
-
-    json_body = {
-        'search': searchRes,
-        'page_ask': request.rel_url.query['page'],
-        'per_page_ask': request.rel_url.query['per_page']
-    }
-
-    async with request.app['http_session'].post(output_url, json=json_body) as resp:
-        res_status = resp.status
-        res = await resp.json()
-
-    return web.json_response(res, status=res_status)
-
+    
 
 @routes.get('/siren')
 async def search_endpoint(request):
