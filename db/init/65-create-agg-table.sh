@@ -1,4 +1,3 @@
-
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
     CREATE TABLE siren_full
     AS (

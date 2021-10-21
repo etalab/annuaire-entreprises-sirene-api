@@ -14,14 +14,14 @@ RUN BUILD_DEPS="curl ca-certificates xz-utils" && \
     cd / && \
     apt-get -qq purge --auto-remove -y $BUILD_DEPS && \
     apt-get -qq clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN apt-get update && apt-get install -y curl
 
 RUN apt-get update && apt-get install -y gnupg2
 
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main 12' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
-RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 
 RUN apt-get update && apt-get install -y postgresql-client-12
 
@@ -58,4 +58,3 @@ EXPOSE 3000
 HEALTHCHECK --interval=1s --timeout=3s \
   CMD PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_DB_HOST -p 5432 -U $POSTGRES_USER -d $POSTGRES_DB -c "select * from etablissements_siren limit 1;"
 CMD exec postgrest /etc/postgrest.conf
-
