@@ -11,10 +11,10 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.postgrest.address=:3000"
+      - "--entrypoints.elastic.address=:9200"
       - "--entrypoints.aio.address=:4400"
     ports:
-      - "3000:3000"
+      - "9200:9200"
       - "4400:4400"
       - "8090:8080"
     volumes:

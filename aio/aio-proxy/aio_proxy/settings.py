@@ -1,5 +1,6 @@
 import pathlib
 import yaml
+import os
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
 config_path = BASE_DIR / 'config' / 'aio_proxy.yaml'

@@ -6,6 +6,8 @@ WORKDIR /app
 
 RUN pip install -r requirements.pip
 
+ENV color=blue
+
 EXPOSE 4400
 
 CMD [ "make", "run" ] 

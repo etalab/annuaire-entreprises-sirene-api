@@ -3,6 +3,9 @@ services:
   http-proxy:
     build:
       context: ./aio
+    environment:
+       - CURRENT_COLOR=blue
+       - NEXT_COLOR=green
     networks:
        - traefik
     labels:
@@ -10,7 +13,7 @@ services:
       - "traefik.http.routers.aio.rule=Host(`localhost`)"
       - "traefik.http.routers.aio.entrypoints=aio"
       - "traefik.port=4400"
+    container_name: aio-blue
 networks:
     traefik:
-        external:
-            name: backend-siren_backendsiren
+        name: only-search_backendsiren

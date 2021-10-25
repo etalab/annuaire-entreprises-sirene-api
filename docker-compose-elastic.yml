@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    environment:
+      - node.name=elastic-sirene
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=etalab123
+    networks:
+       - traefik
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.elastic.rule=Host(`localhost`)"
+      - "traefik.http.routers.elastic.entrypoints=elastic"
+      - "traefik.port=9200"
+    volumes:
+      - esdata_ent:/usr/share/elasticsearch/data
+    container_name: elastic-sirene
+    
+volumes:
+  esdata_ent:
+    driver: local
+
+networks:
+    traefik:
+        name: only-search_backendsiren
