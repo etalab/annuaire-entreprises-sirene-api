@@ -16,4 +16,4 @@ services:
     container_name: aio-blue
 networks:
     traefik:
-        name: only-search_backendsiren
+        name: only-search_onlysearch

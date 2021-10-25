@@ -5,8 +5,8 @@ services:
   traefik:
     image: "traefik:v2.3"
     networks:
-      - backendsiren
-    container_name: "traefik"
+      - onlysearch
+    container_name: "traefik-onlysearch"
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -20,5 +20,5 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 networks:
-    backendsiren:
+    onlysearch:
         driver: bridge
