@@ -8,6 +8,6 @@ RUN pip install -r requirements.pip
 
 ENV color=blue
 
-EXPOSE 4400
+EXPOSE 4500
 
 CMD [ "make", "run" ] 
