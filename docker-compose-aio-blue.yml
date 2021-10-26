@@ -7,7 +7,7 @@ services:
        - CURRENT_COLOR=blue
        - NEXT_COLOR=green
     networks:
-       - traefik
+       - traefik-onlysearch
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.aio.rule=Host(`localhost`)"
@@ -15,5 +15,5 @@ services:
       - "traefik.port=4500"
     container_name: aio-blue
 networks:
-    traefik:
+    traefik-onlysearch:
         name: only-search_onlysearch

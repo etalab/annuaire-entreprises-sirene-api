@@ -12,7 +12,7 @@ services:
       - ELASTICSEARCH_PORT=9300
       - ELASTIC_PASSWORD=etalab123
     networks:
-       - traefik
+       - traefik-onlysearch
     ulimits:
       memlock:
         soft: -1
@@ -31,5 +31,5 @@ volumes:
     driver: local
 
 networks:
-    traefik:
+    traefik-onlysearch:
         name: only-search_onlysearch
