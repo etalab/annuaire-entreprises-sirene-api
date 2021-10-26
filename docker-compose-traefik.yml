@@ -11,12 +11,12 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.elastic.address=:9200"
-      - "--entrypoints.aio.address=:4400"
+      - "--entrypoints.elastic.address=:9300"
+      - "--entrypoints.aio.address=:4500"
     ports:
-      - "9200:9200"
-      - "4400:4400"
-      - "8090:8080"
+      - "9300:9300"
+      - "4500:4500"
+      - "8091:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 networks:

@@ -9,7 +9,7 @@ services:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=true
-      - ELASTIC_USERNAME=elastic
+      - ELASTICSEARCH_PORT=9300
       - ELASTIC_PASSWORD=etalab123
     networks:
        - traefik
