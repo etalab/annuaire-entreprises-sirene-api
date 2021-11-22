@@ -13,10 +13,15 @@ docker-compose docker-compose-elastic.yml up -d
 
 ### Alimenter la base elastic
 
-La base elastic est alimentée via un dag airflow
+La base elastic est alimentée via un dag airflow (dag_datalake_sirene)
 
 ### Mettre à jour le proxy aio
 
 docker-compose docker-compose-aio-$COLOR.yml up -d
+
+### Backend light pour query elasticsearch
+
+python query-es.py
+
 
 
