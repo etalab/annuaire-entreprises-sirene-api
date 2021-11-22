@@ -1,9 +1,14 @@
-version: '3'
+version: '3.6'
 services:
   db-blue:
     build:
       context: ./db
+<<<<<<< HEAD
       shm_size: '50gb'
+=======
+      shm_size: '60gb'
+    shm_size: '60gb'
+>>>>>>> 8b6dcc7561a13d1955cd91853450c936dd7b2fff
     volumes:
       - ./db/init/:/docker-entrypoint-initdb.d/
     environment:

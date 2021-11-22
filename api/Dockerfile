@@ -58,4 +58,3 @@ EXPOSE 3000
 HEALTHCHECK --interval=1s --timeout=3s \
   CMD PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_DB_HOST -p 5432 -U $POSTGRES_USER -d $POSTGRES_DB -c "select * from etablissements_siren limit 1;"
 CMD exec postgrest /etc/postgrest.conf
-

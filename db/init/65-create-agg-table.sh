@@ -1,10 +1,10 @@
-
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
     CREATE TABLE siren_full
     AS (
         SELECT 
             T.activiteprincipaleetablissement as activite_principale, 
             N.activiteprincipaleunitelegale as activite_principale_entreprise, 
+            N.statutdiffusionunitelegale as statut_unite_legale,
             T.activiteprincipaleregistremetiersetablissement as activite_principale_registre_metier, 
             N. categorieentreprise as categorie_entreprise, 
             T.codecedexetablissement as cedex, 
@@ -23,7 +23,8 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
             T.etablissementsiege as is_siege, 
             T.latitude, 
             T.libellecommuneetablissement as libelle_commune, 
-            T.libellevoieetablissement as libelle_voie, 
+            T.libellevoieetablissement as libelle_voie,
+            T.indicerepetitionetablissement as indice_repetition,
             T.longitude, 
             N.categoriejuridiqueunitelegale as nature_juridique_entreprise, 
             T.nic, 
@@ -42,7 +43,20 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
             T.etatadministratifetablissement as etat_administratif_etablissement,
             N.enseignes,
             N.nombre_etablissements,
+<<<<<<< HEAD
             N.numero_tva_intra
+=======
+            N.etablissements,
+            N.nom_complet,
+            N.nom_url,
+            N.numero_tva_intra,
+            N.tsv_nomentreprise,
+            N.tsv_enseigne,
+            N.tsv_nomprenom,
+            N.tsv_adresse,
+            N.economieSocialeSolidaireUniteLegale,
+            N.identifiantAssociationUniteLegale
+>>>>>>> 8b6dcc7561a13d1955cd91853450c936dd7b2fff
         FROM siret T 
         LEFT JOIN siren N 
         ON N.siren = T.siren
