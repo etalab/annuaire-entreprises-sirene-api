@@ -3,7 +3,7 @@ FROM postgres:12-bullseye
 ENV POSTGRES_DB=sirene
 ENV POSTGRES_USER=sirene
 ENV POSTGRES_PASSWORD=sirene
-ENV START_POSTGRES=false
+ENV START_POSTGRES=true
 
 WORKDIR /srv/sirene/
 
