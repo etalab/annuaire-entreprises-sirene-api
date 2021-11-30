@@ -1,0 +1,13 @@
+version: '3.6'
+services:
+  db:
+    build:
+      context: ./db
+      shm_size: '60gb'
+    shm_size: '60gb'
+    volumes:
+      - type: bind
+        source: /var/lib/postgresql
+        target: /var/lib/postgresql
+    environment:
+      - START_POSTGRES=false
