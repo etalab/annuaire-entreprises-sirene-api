@@ -9,5 +9,8 @@ services:
       - type: bind
         source: /var/lib/postgresql
         target: /var/lib/postgresql
+      - type: bind
+        source: /var/lib/postgresql/data
+        target: /var/lib/postgresql/data
     environment:
       - START_POSTGRES=false
