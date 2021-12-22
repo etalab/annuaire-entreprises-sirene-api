@@ -1,4 +1,4 @@
-FROM postgres:12
+FROM postgres:12-bullseye
 
 ENV POSTGRES_DB=sirene
 ENV POSTGRES_USER=sirene
