@@ -7,29 +7,21 @@ services:
       - node.name=elastic-sirene
       - cluster.name=es-docker-cluster
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Dlog4j2.formatMsgNoLookups=true"
       - xpack.security.enabled=true
-      - ELASTICSEARCH_PORT=9300
+      - ELASTICSEARCH_PORT=9200
       - ELASTIC_PASSWORD=etalab123
-    networks:
-       - traefik-onlysearch
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.elastic.rule=Host(`localhost`)"
-      - "traefik.http.routers.elastic.entrypoints=elastic"
-      - "traefik.port=9200"
     volumes:
       - esdata_ent:/usr/share/elasticsearch/data
-    container_name: elastic-sirene
-    
+    container_name: elastic-sirene-hajar
+    ports:
+      - "9333:9200"
+    command: bash -c "zip -q -d /usr/share/elasticsearch/lib/log4j-core-*.jar org/apache/logging/log4j/core/lookup/JndiLookup.class && /usr/local/bin/docker-entrypoint.sh" 
 volumes:
   esdata_ent:
     driver: local
 
-networks:
-    traefik-onlysearch:
-        name: only-search_onlysearch
