@@ -1,6 +1,6 @@
-host: 0.0.0.0
-port: 4400
+host: !ENV "${AIO_PROXY_HOST}"
+port: !ENV "${AIO_PROXY_PORT}"
 
-output_url_search: "http://postgrest:3000/rpc/get_unite_legale"
-output_url_siren: "http://postgrest:3000/rpc/get_etablissements"
-output_url_siret: "http://postgrest:3000/rpc/get_etablissement"
+output_url_search: !ENV "http://${POSTGREST_API_HOST}:${POSTGREST_API_PORT}/rpc/get_unite_legale"
+output_url_siren: !ENV "http://${POSTGREST_API_HOST}:${POSTGREST_API_PORT}/rpc/get_etablissements"
+output_url_siret: !ENV "http://${POSTGREST_API_HOST}:${POSTGREST_API_PORT}/rpc/get_etablissement"
