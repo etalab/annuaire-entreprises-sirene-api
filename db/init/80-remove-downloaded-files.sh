@@ -1,1 +1,0 @@
-rm -rf /var/lib/postgresql/files
