@@ -1,0 +1,19 @@
+version: '3.6'
+services:
+  db-init:
+    build:
+      context: ./db
+      shm_size: '60gb'
+    shm_size: '60gb'
+    volumes:
+      - ./db/init/:/docker-entrypoint-initdb.d/
+      - type: bind
+        source: /var/lib/postgresql
+        target: /var/lib/postgresql
+      - type: bind
+        source: /var/lib/postgresql/data
+        target: /var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=sirene
+      - POSTGRES_USER=sirene
+      - POSTGRES_PASSWORD=sirene
