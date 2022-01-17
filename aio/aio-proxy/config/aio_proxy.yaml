@@ -1,6 +1,5 @@
 host: !ENV "${AIO_PROXY_HOST}"
 port: !ENV "${AIO_PROXY_PORT}"
 
-output_url_search: !ENV "http://${POSTGREST_API_HOST}:${POSTGREST_API_PORT}/rpc/get_unite_legale"
 output_url_siren: !ENV "http://${POSTGREST_API_HOST}:${POSTGREST_API_PORT}/rpc/get_etablissements"
 output_url_siret: !ENV "http://${POSTGREST_API_HOST}:${POSTGREST_API_PORT}/rpc/get_etablissement"
