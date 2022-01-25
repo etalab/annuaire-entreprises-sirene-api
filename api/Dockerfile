@@ -29,10 +29,10 @@ RUN apt-get update && apt-get install -y postgresql-client-12
 COPY postgrest.conf /etc/postgrest.conf
 
 ENV PGRST_DB_URI= \
-    PGRST_DB_SCHEMA=public \
+    PGRST_DB_SCHEMA=$POSTGRES_DB \
     PGRST_DB_ANON_ROLE= \
     PGRST_DB_POOL=100 \
-    PGRST_DB_EXTRA_SEARCH_PATH=public \
+    PGRST_DB_EXTRA_SEARCH_PATH=$POSTGRES_DB \
     PGRST_SERVER_HOST=*4 \
     PGRST_SERVER_PORT=3000 \
     PGRST_OPENAPI_SERVER_PROXY_URI= \

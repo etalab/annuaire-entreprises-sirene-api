@@ -1,3 +1,6 @@
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE SCHEMA $POSTGRES_DB;"
+psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SET search_path TO $POSTGRES_DB, public;"
+
 psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE EXTENSION pg_trgm;"
 
 
