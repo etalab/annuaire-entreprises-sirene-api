@@ -3,7 +3,7 @@
 ENV="db-blue"
 echo $ENV
 
-if [ $(docker ps -f name=$ENV -q | wc -l) = 0 ]
+if [ $(docker ps -f name=db-$ENV -q | wc -l) = 0 ]
 then
     ENV="blue"
     OLD="green"
