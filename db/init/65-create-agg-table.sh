@@ -43,9 +43,7 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
             T.etatadministratifetablissement as etat_administratif_etablissement,
             N.enseignes,
             N.nombre_etablissements,
-<<<<<<< HEAD
-            N.numero_tva_intra
-=======
+            N.numero_tva_intra,
             N.etablissements,
             N.nom_complet,
             N.nom_url,
@@ -56,7 +54,6 @@ psql -U $POSTGRES_USER -d $POSTGRES_DB -c "
             N.tsv_adresse,
             N.economieSocialeSolidaireUniteLegale,
             N.identifiantAssociationUniteLegale
->>>>>>> 8b6dcc7561a13d1955cd91853450c936dd7b2fff
         FROM siret T 
         LEFT JOIN siren N 
         ON N.siren = T.siren
