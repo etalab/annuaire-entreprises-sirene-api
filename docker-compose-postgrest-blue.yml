@@ -10,6 +10,7 @@ services:
       - POSTGRES_DB=sirene
       - POSTGRES_USER=sirene
       - POSTGRES_PASSWORD=sirene
+      - POSTGRES_DB_PORT=5432
     networks:
       - traefik
     labels:
